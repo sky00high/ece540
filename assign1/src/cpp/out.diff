@@ -1,0 +1,63 @@
+1,2c1,3
+< block 0	instrs 0
+< 	successors 0
+---
+> block 0
+> 	instrs 0
+> 	successors 1 1
+4c5,6
+< block 1	instrs 6 0 1 2 3 4 5
+---
+> block 1
+> 	instrs 6 0 1 2 3 4 5
+6,7c8,10
+< 	predecessors 0
+< block 2	instrs 4 6 7 8 9
+---
+> 	predecessors 1 0
+> block 2
+> 	instrs 4 6 7 8 9
+9,11d11
+< 	predecessors 0
+< block 3	instrs 4 10 11 12 13
+< 	successors 0
+13c13,18
+< block 4	instrs 7 14 15 16 17 18 19 20
+---
+> block 3
+> 	instrs 4 10 11 12 13
+> 	successors 1 4
+> 	predecessors 1 1
+> block 4
+> 	instrs 7 14 15 16 17 18 19 20
+15,16c20,22
+< 	predecessors 1 2
+< block 5	instrs 4 21 22 23 24
+---
+> 	predecessors 2 2 3
+> block 5
+> 	instrs 4 21 22 23 24
+18,20d23
+< 	predecessors 0
+< block 6	instrs 4 25 26 27 28
+< 	successors 0
+22,25c25,34
+< block 7	instrs 2 29 30
+< 	successors 0
+< 	predecessors 1 5
+< block 8	instrs 0
+---
+> block 6
+> 	instrs 4 25 26 27 28
+> 	successors 1 7
+> 	predecessors 1 4
+> block 7
+> 	instrs 2 29 30
+> 	successors 1 8
+> 	predecessors 2 5 6
+> block 8
+> 	instrs 0
+27c36
+< 	predecessors 0
+---
+> 	predecessors 1 7

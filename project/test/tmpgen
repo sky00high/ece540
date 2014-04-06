@@ -1,0 +1,5 @@
+#!/bin/csh
+
+foreach i (`ls *.c` )
+	ssfe $i 
+end

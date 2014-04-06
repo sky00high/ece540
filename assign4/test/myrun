@@ -1,0 +1,3 @@
+#!/bin/csh
+
+../src/cpp/hw4 $1

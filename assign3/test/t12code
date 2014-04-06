@@ -1,0 +1,113 @@
+
+Procedure backwards_loop_test:
+	ldc  (s.32)	t2 = 0
+	cpy  (s.32)	r1 = t2
+L3:
+	jmp 		ML16
+ML0:
+	ldc  (a.32)	t3 = &printf + 0
+	ldc  (a.32)	t4 = &__tmp_string_0 + 0
+	call (s.32)	*t3 (t4)
+	jmp 		END
+ML1:
+	ldc  (a.32)	t5 = &printf + 0
+	ldc  (a.32)	t6 = &__tmp_string_1 + 0
+	call (s.32)	*t5 (t6)
+	jmp 		ML0
+ML2:
+	ldc  (a.32)	t7 = &printf + 0
+	ldc  (a.32)	t8 = &__tmp_string_2 + 0
+	call (s.32)	*t7 (t8)
+	jmp 		ML1
+ML3:
+	ldc  (a.32)	t9 = &printf + 0
+	ldc  (a.32)	t10 = &__tmp_string_3 + 0
+	call (s.32)	*t9 (t10)
+	jmp 		ML2
+ML4:
+	ldc  (a.32)	t11 = &printf + 0
+	ldc  (a.32)	t12 = &__tmp_string_4 + 0
+	call (s.32)	*t11 (t12)
+	jmp 		ML3
+ML5:
+	ldc  (a.32)	t13 = &printf + 0
+	ldc  (a.32)	t14 = &__tmp_string_5 + 0
+	call (s.32)	*t13 (t14)
+	jmp 		ML4
+ML6:
+	ldc  (a.32)	t15 = &printf + 0
+	ldc  (a.32)	t16 = &__tmp_string_6 + 0
+	call (s.32)	*t15 (t16)
+	jmp 		ML5
+ML7:
+	ldc  (a.32)	t17 = &printf + 0
+	ldc  (a.32)	t18 = &__tmp_string_7 + 0
+	call (s.32)	*t17 (t18)
+	jmp 		ML6
+ML8:
+	ldc  (a.32)	t19 = &printf + 0
+	ldc  (a.32)	t20 = &__tmp_string_8 + 0
+	call (s.32)	*t19 (t20)
+	jmp 		ML7
+ML9:
+	ldc  (a.32)	t21 = &printf + 0
+	ldc  (a.32)	t22 = &__tmp_string_9 + 0
+	call (s.32)	*t21 (t22)
+	jmp 		ML8
+ML10:
+	ldc  (a.32)	t23 = &printf + 0
+	ldc  (a.32)	t24 = &__tmp_string_10 + 0
+	call (s.32)	*t23 (t24)
+	jmp 		ML9
+ML11:
+	ldc  (a.32)	t25 = &printf + 0
+	ldc  (a.32)	t26 = &__tmp_string_11 + 0
+	call (s.32)	*t25 (t26)
+	jmp 		ML10
+ML12:
+	ldc  (a.32)	t27 = &printf + 0
+	ldc  (a.32)	t28 = &__tmp_string_12 + 0
+	call (s.32)	*t27 (t28)
+	jmp 		ML11
+ML13:
+	ldc  (a.32)	t29 = &printf + 0
+	ldc  (a.32)	t30 = &__tmp_string_13 + 0
+	call (s.32)	*t29 (t30)
+	jmp 		ML12
+ML14:
+	ldc  (a.32)	t31 = &printf + 0
+	ldc  (a.32)	t32 = &__tmp_string_14 + 0
+	call (s.32)	*t31 (t32)
+	jmp 		ML13
+ML15:
+	ldc  (a.32)	t33 = &printf + 0
+	ldc  (a.32)	t34 = &__tmp_string_15 + 0
+	call (s.32)	*t33 (t34)
+	jmp 		ML14
+ML16:
+	ldc  (a.32)	t35 = &printf + 0
+	ldc  (a.32)	t36 = &__tmp_string_16 + 0
+	call (s.32)	*t35 (t36)
+	jmp 		ML15
+END:
+	ldc  (a.32)	t37 = &printf + 0
+	ldc  (a.32)	t38 = &__tmp_string_17 + 0
+	call (s.32)	*t37 (t38)
+L1:
+	ldc  (s.32)	t39 = 1
+	add  (s.32)	t40 = r1, t39
+	cpy  (s.32)	r1 = t40
+	ldc  (s.32)	t41 = 2
+	sle  (s.32)	t42 = t41, r1
+	bfls		t42, L3
+L2:
+	ret 		
+
+Procedure main:
+	ldc  (a.32)	t3 = &backwards_loop_test + 0
+	call (v.0)	*t3 ()
+	ldc  (a.32)	t4 = &exit + 0
+	ldc  (s.32)	t5 = 0
+	call (s.32)	*t4 (t5)
+	ldc  (s.32)	t6 = 0
+	ret 		t6

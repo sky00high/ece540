@@ -1,0 +1,51 @@
+variables main 0
+
+def_lv_sets main 3
+def_lv 0 
+def_lv 1 
+def_lv 2 
+
+use_lv_sets main 3
+use_lv 0 
+use_lv 1 
+use_lv 2 
+
+live_variables main 3
+live_out 0 
+live_out 1 
+live_out 2 
+
+variables foo 0
+
+def_lv_sets foo 3
+def_lv 0 
+def_lv 1 
+def_lv 2 
+
+use_lv_sets foo 3
+use_lv 0 
+use_lv 1 
+use_lv 2 
+
+live_variables foo 3
+live_out 0 
+live_out 1 
+live_out 2 
+
+variables bar 0
+
+def_lv_sets bar 3
+def_lv 0 
+def_lv 1 
+def_lv 2 
+
+use_lv_sets bar 3
+use_lv 0 
+use_lv 1 
+use_lv 2 
+
+live_variables bar 3
+live_out 0 
+live_out 1 
+live_out 2 
+

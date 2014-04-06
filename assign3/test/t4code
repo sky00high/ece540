@@ -1,0 +1,51 @@
+
+Procedure fibonaci:
+	ldc  (s.32)	t5 = 2
+	sl   (s.32)	t6 = r1, t5
+	bfls		t6, L1
+	cpy  (s.32)	r2 = r1
+	jmp 		__done2
+L1:
+	ldc  (a.32)	t7 = &fibonaci + 0
+	ldc  (s.32)	t8 = 1
+	sub  (s.32)	t9 = r1, t8
+	call (s.32)	t10 = *t7 (t9)
+	cpy  (s.32)	r3 = t10
+	ldc  (a.32)	t11 = &fibonaci + 0
+	ldc  (s.32)	t12 = 2
+	sub  (s.32)	t13 = r1, t12
+	call (s.32)	t14 = *t11 (t13)
+	cpy  (s.32)	r4 = t14
+	add  (s.32)	t15 = r3, r4
+	cpy  (s.32)	r2 = t15
+__done2:
+	ret 		r2
+
+Procedure loop_with_cflow:
+	ldc  (s.32)	t5 = 15
+	cpy  (s.32)	r3 = t5
+L3:
+	ldc  (s.32)	t6 = 3
+	cpy  (s.32)	r2 = t6
+	ldc  (s.32)	t7 = 3
+	seq  (s.32)	t8 = r2, t7
+	bfls		t8, L4
+	ldc  (s.32)	t9 = 3
+	cpy  (s.32)	r1 = t9
+	ldc  (s.32)	t10 = 4
+	cpy  (s.32)	r2 = t10
+	jmp 		__done5
+L4:
+	ldc  (s.32)	t11 = 4
+	cpy  (s.32)	r1 = t11
+	ldc  (s.32)	t12 = 3
+	cpy  (s.32)	r2 = t12
+__done5:
+L1:
+	ldc  (s.32)	t13 = 3
+	seq  (s.32)	t14 = r2, t13
+	btru		t14, L3
+L2:
+	add  (s.32)	t15 = r1, r2
+	cpy  (s.32)	r4 = t15
+	ret 		

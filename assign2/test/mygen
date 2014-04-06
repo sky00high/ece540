@@ -1,0 +1,5 @@
+#!/bin/csh
+
+foreach i (`seq 1 1 12`)
+	../src/cpp/hw2 t$i.tmp > t$i"my"
+end

@@ -1,0 +1,12 @@
+#!/bin/csh
+
+foreach i (`seq 1 1 15`)
+	set diff_line_num=`diff -d t$i"my" t$i"ref" | wc -l`
+	if( $diff_line_num != 0) then
+		echo "found difference on test $i, $diff_line_num lines are different"
+		diff -d t$i"my" t$i"ref" > t$i"dif"
+	else
+		echo "pass test $i"
+	endif
+end
+

@@ -1,0 +1,64 @@
+
+Procedure infinity:
+	ldc  (a.32)	t7 = &printf + 0
+	ldc  (a.32)	t8 = &__tmp_string_0 + 0
+	call (s.32)	*t7 (t8)
+	ldc  (s.32)	t9 = 1
+	cpy  (s.32)	r5 = t9
+	ldc  (s.32)	t10 = 0
+	sne  (s.32)	t11 = r5, t10
+	bfls		t11, L1
+L4:
+	ldc  (s.32)	t12 = 5
+	cpy  (s.32)	r2 = t12
+	ldc  (s.32)	t13 = 3
+	mul  (s.32)	t14 = r2, t13
+	cpy  (s.32)	r1 = t14
+	cpy  (s.32)	r3 = r1
+	add  (s.32)	t15 = r1, r3
+	ldc  (s.32)	t16 = 2
+	div  (s.32)	t17 = r2, t16
+	sub  (s.32)	t18 = t15, t17
+	cpy  (s.32)	r4 = t18
+L2:
+	ldc  (s.32)	t19 = 0
+	sne  (s.32)	t20 = r5, t19
+	btru		t20, L4
+L3:
+L1:
+	ldc  (a.32)	t21 = &printf + 0
+	ldc  (a.32)	t22 = &__tmp_string_1 + 0
+	call (s.32)	*t21 (t22)
+	ldc  (s.32)	t23 = -3
+	cpy  (s.32)	r3 = t23
+	ldc  (s.32)	t24 = 0
+	sl   (s.32)	t25 = t24, r3
+	bfls		t25, L7
+	ldc  (s.32)	t26 = 0
+	cpy  (s.32)	r6 = t26
+L8:
+	ldc  (s.32)	t27 = 6
+	cpy  (s.32)	r1 = t27
+	ldc  (s.32)	t28 = 3
+	div  (s.32)	t29 = r1, t28
+	cpy  (s.32)	r2 = t29
+	add  (s.32)	t30 = r3, r2
+	cpy  (s.32)	r3 = t30
+	ldc  (s.32)	t31 = 17
+	cpy  (s.32)	r4 = t31
+L5:
+	ldc  (s.32)	t32 = 3
+	add  (s.32)	t33 = r6, t32
+	cpy  (s.32)	r6 = t33
+	sle  (s.32)	t34 = r3, r6
+	bfls		t34, L8
+L6:
+	jmp 		__done9
+L7:
+	ldc  (s.32)	t35 = 0
+	cpy  (s.32)	r6 = t35
+__done9:
+	ldc  (a.32)	t36 = &printf + 0
+	ldc  (a.32)	t37 = &__tmp_string_2 + 0
+	call (s.32)	*t36 (t37)
+	ret 		

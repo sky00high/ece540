@@ -1,0 +1,8 @@
+#!/bin/csh
+rm -i -f *my
+foreach i (`seq 1 1 15`)
+	echo "generating case # $i"
+#	../src/cpp/hw4 t$i.tmp > t$i"my"
+	hw4/hw4 t$i.tmp > t$i"my"
+
+end

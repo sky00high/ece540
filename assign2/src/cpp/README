@@ -1,0 +1,11 @@
+sorry for the late submission.
+
+In the new assignment, I added few method in my class I designed in A1.
+
+findREdge will find all backedges. It does not use DFS, but exam all the edges. If I find the there is an edge point from a to b and b dom a, I consider it as a backedge. Lucily my old design have all the information I need. So this method is rather easy.
+
+insertPreHeaders will insert all the headers. I comment in the code about how I do it.
+
+After inserting, I deleted my old CFG object and create a new one. New graph is generated and I print it out use the method I design from last assignment.
+
+printLoop will then be invoked and detect and print all the loops. 

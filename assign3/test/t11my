@@ -1,0 +1,47 @@
+variables ae_test 6
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+var 5 r5
+var 6 r6
+
+def_lv_sets ae_test 11
+def_lv 0 000000
+def_lv 1 010000
+def_lv 2 000000
+def_lv 3 001000
+def_lv 4 000000
+def_lv 5 000100
+def_lv 6 000010
+def_lv 7 000000
+def_lv 8 000000
+def_lv 9 000001
+def_lv 10 000000
+
+use_lv_sets ae_test 11
+use_lv 0 000000
+use_lv 1 100000
+use_lv 2 000000
+use_lv 3 100000
+use_lv 4 000000
+use_lv 5 110000
+use_lv 6 110000
+use_lv 7 100000
+use_lv 8 000000
+use_lv 9 110000
+use_lv 10 000000
+
+live_variables ae_test 11
+live_out 0 100000
+live_out 1 110000
+live_out 2 110000
+live_out 3 110000
+live_out 4 110000
+live_out 5 110000
+live_out 6 110000
+live_out 7 110000
+live_out 8 110000
+live_out 9 000000
+live_out 10 000000
+

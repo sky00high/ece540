@@ -1,0 +1,193 @@
+
+Procedure cascading:
+	ldc  (s.32)	t21 = 0
+	sl   (s.32)	t22 = t21, r2
+	bfls		t22, L21
+	ldc  (s.32)	t23 = 0
+	cpy  (s.32)	r11 = t23
+L22:
+	ldc  (s.32)	t24 = 0
+	sl   (s.32)	t25 = t24, r3
+	bfls		t25, L210
+	ldc  (s.32)	t26 = 0
+	cpy  (s.32)	r12 = t26
+L220:
+	ldc  (s.32)	t27 = 0
+	sl   (s.32)	t28 = t27, r4
+	bfls		t28, L2100
+	ldc  (s.32)	t29 = 0
+	cpy  (s.32)	r13 = t29
+L2200:
+	ldc  (s.32)	t30 = 0
+	sl   (s.32)	t31 = t30, r5
+	bfls		t31, L21000
+	ldc  (s.32)	t32 = 0
+	cpy  (s.32)	r14 = t32
+L22000:
+	ldc  (s.32)	t33 = 0
+	sl   (s.32)	t34 = t33, r6
+	bfls		t34, L210000
+	ldc  (s.32)	t35 = 0
+	cpy  (s.32)	r15 = t35
+L220000:
+	ldc  (s.32)	t36 = 0
+	sl   (s.32)	t37 = t36, r7
+	bfls		t37, L2100000
+	ldc  (s.32)	t38 = 0
+	cpy  (s.32)	r16 = t38
+L2200000:
+	ldc  (s.32)	t39 = 0
+	sl   (s.32)	t40 = t39, r8
+	bfls		t40, L21000000
+	ldc  (s.32)	t41 = 0
+	cpy  (s.32)	r17 = t41
+L22000000:
+	ldc  (s.32)	t42 = 0
+	sl   (s.32)	t43 = t42, r9
+	bfls		t43, L210000000
+	ldc  (s.32)	t44 = 0
+	cpy  (s.32)	r18 = t44
+L220000000:
+	ldc  (s.32)	t45 = 0
+	sl   (s.32)	t46 = t45, r10
+	bfls		t46, L2100000000
+	ldc  (s.32)	t47 = 0
+	cpy  (s.32)	r19 = t47
+L2200000000:
+	ldc  (s.32)	t48 = 0
+	sl   (s.32)	t49 = t48, r1
+	bfls		t49, L23
+	ldc  (s.32)	t50 = 0
+	cpy  (s.32)	r20 = t50
+L24:
+	ldc  (s.32)	t51 = 0
+	cpy  (s.32)	r10 = t51
+	cpy  (s.32)	r9 = r10
+	cpy  (s.32)	r8 = r9
+	cpy  (s.32)	r7 = r8
+	cpy  (s.32)	r6 = r7
+	cpy  (s.32)	r5 = r6
+	cpy  (s.32)	r4 = r5
+	cpy  (s.32)	r3 = r4
+	cpy  (s.32)	r2 = r3
+L19:
+	ldc  (s.32)	t52 = 1
+	add  (s.32)	t53 = r20, t52
+	cpy  (s.32)	r20 = t53
+	sle  (s.32)	t54 = r1, r20
+	bfls		t54, L24
+L20:
+	jmp 		__done25
+L23:
+	ldc  (s.32)	t55 = 0
+	cpy  (s.32)	r20 = t55
+__done25:
+L17:
+	ldc  (s.32)	t56 = 1
+	add  (s.32)	t57 = r19, t56
+	cpy  (s.32)	r19 = t57
+	sle  (s.32)	t58 = r10, r19
+	bfls		t58, L2200000000
+L18:
+	jmp 		__done26
+L2100000000:
+	ldc  (s.32)	t59 = 0
+	cpy  (s.32)	r19 = t59
+__done26:
+L15:
+	ldc  (s.32)	t60 = 1
+	add  (s.32)	t61 = r18, t60
+	cpy  (s.32)	r18 = t61
+	sle  (s.32)	t62 = r9, r18
+	bfls		t62, L220000000
+L16:
+	jmp 		__done23
+L210000000:
+	ldc  (s.32)	t63 = 0
+	cpy  (s.32)	r18 = t63
+__done23:
+L13:
+	ldc  (s.32)	t64 = 1
+	add  (s.32)	t65 = r17, t64
+	cpy  (s.32)	r17 = t65
+	sle  (s.32)	t66 = r8, r17
+	bfls		t66, L22000000
+L14:
+	jmp 		__done24
+L21000000:
+	ldc  (s.32)	t67 = 0
+	cpy  (s.32)	r17 = t67
+__done24:
+L11:
+	ldc  (s.32)	t68 = 1
+	add  (s.32)	t69 = r16, t68
+	cpy  (s.32)	r16 = t69
+	sle  (s.32)	t70 = r7, r16
+	bfls		t70, L2200000
+L12:
+	jmp 		__done27
+L2100000:
+	ldc  (s.32)	t71 = 0
+	cpy  (s.32)	r16 = t71
+__done27:
+L9:
+	ldc  (s.32)	t72 = 1
+	add  (s.32)	t73 = r15, t72
+	cpy  (s.32)	r15 = t73
+	sle  (s.32)	t74 = r6, r15
+	bfls		t74, L220000
+L10:
+	jmp 		__done28
+L210000:
+	ldc  (s.32)	t75 = 0
+	cpy  (s.32)	r15 = t75
+__done28:
+L7:
+	ldc  (s.32)	t76 = 1
+	add  (s.32)	t77 = r14, t76
+	cpy  (s.32)	r14 = t77
+	sle  (s.32)	t78 = r5, r14
+	bfls		t78, L22000
+L8:
+	jmp 		__done29
+L21000:
+	ldc  (s.32)	t79 = 0
+	cpy  (s.32)	r14 = t79
+__done29:
+L5:
+	ldc  (s.32)	t80 = 1
+	add  (s.32)	t81 = r13, t80
+	cpy  (s.32)	r13 = t81
+	sle  (s.32)	t82 = r4, r13
+	bfls		t82, L2200
+L6:
+	jmp 		__done30
+L2100:
+	ldc  (s.32)	t83 = 0
+	cpy  (s.32)	r13 = t83
+__done30:
+L3:
+	ldc  (s.32)	t84 = 1
+	add  (s.32)	t85 = r12, t84
+	cpy  (s.32)	r12 = t85
+	sle  (s.32)	t86 = r3, r12
+	bfls		t86, L220
+L4:
+	jmp 		__done31
+L210:
+	ldc  (s.32)	t87 = 0
+	cpy  (s.32)	r12 = t87
+__done31:
+L1:
+	ldc  (s.32)	t88 = 1
+	add  (s.32)	t89 = r11, t88
+	cpy  (s.32)	r11 = t89
+	sle  (s.32)	t90 = r2, r11
+	bfls		t90, L22
+L2:
+	jmp 		__done32
+L21:
+	ldc  (s.32)	t91 = 0
+	cpy  (s.32)	r11 = t91
+__done32:
+	ret 		r20

@@ -1,0 +1,21 @@
+
+Procedure main:
+	ldc  (a.32)	t1 = &printf + 0
+	ldc  (a.32)	t2 = &__tmp_string_0 + 0
+	call (s.32)	*t1 (t2)
+	ret 		
+
+Procedure foo:
+	ldc  (a.32)	t1 = &printf + 0
+	ldc  (a.32)	t2 = &__tmp_string_1 + 0
+	call (s.32)	*t1 (t2)
+	ret 		
+
+Procedure bar:
+	ldc  (a.32)	t1 = &printf + 0
+	ldc  (a.32)	t2 = &__tmp_string_2 + 0
+	call (s.32)	*t1 (t2)
+	ldc  (a.32)	t3 = &printf + 0
+	ldc  (a.32)	t4 = &__tmp_string_3 + 0
+	call (s.32)	*t3 (t4)
+	ret 		

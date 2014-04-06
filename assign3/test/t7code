@@ -1,0 +1,79 @@
+
+Procedure match:
+	cpy  (s.32)	r9 = r1
+	ldc  (s.32)	t10 = 0
+	sl   (s.32)	t11 = r9, t10
+	btru		t11, L9
+	ldc  (s.32)	t12 = 5
+	sl   (s.32)	t13 = t12, r9
+	btru		t13, L9
+	mbr 		r9 (0 to 5), L8, (L2, L3, L4, L5, L6, L7)
+L9:
+	jmp 		L8
+L2:
+	ldc  (s.32)	t14 = 1
+	cpy  (s.32)	r2 = t14
+	jmp 		L1
+L3:
+	ldc  (s.32)	t15 = 1
+	cpy  (s.32)	r3 = t15
+	jmp 		L1
+L4:
+	ldc  (s.32)	t16 = 1
+	cpy  (s.32)	r4 = t16
+	jmp 		L1
+L5:
+	ldc  (s.32)	t17 = 1
+	cpy  (s.32)	r5 = t17
+	jmp 		L1
+L6:
+	ldc  (s.32)	t18 = 1
+	cpy  (s.32)	r6 = t18
+	jmp 		L1
+L7:
+	ldc  (s.32)	t19 = 1
+	cpy  (s.32)	r7 = t19
+	jmp 		L1
+L8:
+	ldc  (s.32)	t20 = 1
+	cpy  (s.32)	r8 = t20
+	jmp 		L1
+L1:
+	ldc  (a.32)	t21 = &printf + 0
+	ldc  (a.32)	t22 = &__tmp_string_0 + 0
+	call (s.32)	*t21 (t22)
+	ldc  (s.32)	t23 = 0
+	add  (s.32)	t24 = r2, r3
+	sl   (s.32)	t25 = t23, t24
+	bfls		t25, L10
+	ldc  (a.32)	t26 = &printf + 0
+	ldc  (a.32)	t27 = &__tmp_string_1 + 0
+	call (s.32)	*t26 (t27)
+L10:
+	ldc  (s.32)	t28 = 0
+	add  (s.32)	t29 = r4, r5
+	sl   (s.32)	t30 = t28, t29
+	bfls		t30, L11
+	ldc  (a.32)	t31 = &printf + 0
+	ldc  (a.32)	t32 = &__tmp_string_2 + 0
+	call (s.32)	*t31 (t32)
+L11:
+	ldc  (s.32)	t33 = 0
+	add  (s.32)	t34 = r6, r8
+	sl   (s.32)	t35 = t33, t34
+	bfls		t35, L12
+	ldc  (a.32)	t36 = &printf + 0
+	ldc  (a.32)	t37 = &__tmp_string_3 + 0
+	call (s.32)	*t36 (t37)
+L12:
+	ldc  (s.32)	t38 = 0
+	sl   (s.32)	t39 = t38, r7
+	bfls		t39, L13
+	ldc  (a.32)	t40 = &printf + 0
+	ldc  (a.32)	t41 = &__tmp_string_4 + 0
+	call (s.32)	*t40 (t41)
+L13:
+	ldc  (a.32)	t42 = &printf + 0
+	ldc  (a.32)	t43 = &__tmp_string_5 + 0
+	call (s.32)	*t42 (t43)
+	ret 		

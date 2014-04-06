@@ -1,0 +1,53 @@
+variables infinity 6
+var 1 r5
+var 2 r2
+var 3 r1
+var 4 r3
+var 5 r4
+var 6 r6
+
+def_lv_sets infinity 13
+def_lv 0 000000
+def_lv 1 100000
+def_lv 2 011110
+def_lv 3 000000
+def_lv 4 000000
+def_lv 5 000100
+def_lv 6 000001
+def_lv 7 011110
+def_lv 8 000001
+def_lv 9 000000
+def_lv 10 000001
+def_lv 11 000000
+def_lv 12 000000
+
+use_lv_sets infinity 13
+use_lv 0 000000
+use_lv 1 000000
+use_lv 2 000000
+use_lv 3 100000
+use_lv 4 000000
+use_lv 5 000000
+use_lv 6 000000
+use_lv 7 000100
+use_lv 8 000101
+use_lv 9 000000
+use_lv 10 000000
+use_lv 11 000000
+use_lv 12 000000
+
+live_variables infinity 13
+live_out 0 000000
+live_out 1 100000
+live_out 2 100000
+live_out 3 100000
+live_out 4 000000
+live_out 5 000100
+live_out 6 000101
+live_out 7 000101
+live_out 8 000101
+live_out 9 000000
+live_out 10 000000
+live_out 11 000000
+live_out 12 000000
+

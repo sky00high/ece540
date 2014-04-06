@@ -1,0 +1,14 @@
+
+Procedure loop_label_first_instruction_2nd:
+L1:
+	ldc  (a.32)	t2 = &printf + 0
+	ldc  (a.32)	t3 = &__tmp_string_0 + 0
+	call (s.32)	*t2 (t3)
+	ldc  (s.32)	t4 = 6
+	sl   (s.32)	t5 = r1, t4
+	bfls		t5, L2
+	jmp 		Lend
+L2:
+	jmp 		L1
+Lend:
+	ret 		r1

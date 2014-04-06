@@ -1,0 +1,90 @@
+variables vector_dotprod 9
+var 1 r4
+var 2 r5
+var 3 r6
+var 4 r2
+var 5 r7
+var 6 r3
+var 7 r8
+var 8 r9
+var 9 r1
+
+def_lv_sets vector_dotprod 12
+def_lv 0 000000000
+def_lv 1 000000000
+def_lv 2 010000000
+def_lv 3 001000000
+def_lv 4 000010110
+def_lv 5 001000000
+def_lv 6 000000000
+def_lv 7 010000000
+def_lv 8 000000000
+def_lv 9 010000000
+def_lv 10 000000000
+def_lv 11 000000000
+
+use_lv_sets vector_dotprod 12
+use_lv 0 000000000
+use_lv 1 100000000
+use_lv 2 000000000
+use_lv 3 000000000
+use_lv 4 010101001
+use_lv 5 001000000
+use_lv 6 000000000
+use_lv 7 110000000
+use_lv 8 000000000
+use_lv 9 000000000
+use_lv 10 000000000
+use_lv 11 000000000
+
+live_variables vector_dotprod 12
+live_out 0 100101001
+live_out 1 100101001
+live_out 2 110101001
+live_out 3 111101001
+live_out 4 111101001
+live_out 5 111101001
+live_out 6 110101001
+live_out 7 110101001
+live_out 8 000000000
+live_out 9 000000000
+live_out 10 000000000
+live_out 11 000000000
+
+variables main 2
+var 1 r1
+var 2 r2
+
+def_lv_sets main 9
+def_lv 0 00
+def_lv 1 10
+def_lv 2 00
+def_lv 3 10
+def_lv 4 11
+def_lv 5 00
+def_lv 6 10
+def_lv 7 00
+def_lv 8 00
+
+use_lv_sets main 9
+use_lv 0 00
+use_lv 1 00
+use_lv 2 10
+use_lv 3 10
+use_lv 4 00
+use_lv 5 11
+use_lv 6 10
+use_lv 7 01
+use_lv 8 00
+
+live_variables main 9
+live_out 0 00
+live_out 1 10
+live_out 2 10
+live_out 3 10
+live_out 4 11
+live_out 5 11
+live_out 6 11
+live_out 7 00
+live_out 8 00
+

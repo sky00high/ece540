@@ -1,0 +1,33 @@
+
+Procedure func:
+	ldc  (a.32)	t2 = &printf + 0
+	ldc  (a.32)	t3 = &__tmp_string_0 + 0
+	call (s.32)	*t2 (t3)
+	ldc  (s.32)	t4 = 0
+	sne  (s.32)	t5 = r1, t4
+	bfls		t5, L1
+	ldc  (a.32)	t6 = &printf + 0
+	ldc  (a.32)	t7 = &__tmp_string_1 + 0
+	call (s.32)	*t6 (t7)
+	jmp 		__done3
+L1:
+	ldc  (a.32)	t8 = &printf + 0
+	ldc  (a.32)	t9 = &__tmp_string_2 + 0
+	call (s.32)	*t8 (t9)
+__done3:
+	ldc  (a.32)	t10 = &printf + 0
+	ldc  (a.32)	t11 = &__tmp_string_3 + 0
+	call (s.32)	*t10 (t11)
+	ldc  (s.32)	t12 = 0
+	sne  (s.32)	t13 = r1, t12
+	bfls		t13, L2
+	ldc  (a.32)	t14 = &printf + 0
+	ldc  (a.32)	t15 = &__tmp_string_4 + 0
+	call (s.32)	*t14 (t15)
+	jmp 		__done4
+L2:
+	ldc  (a.32)	t16 = &printf + 0
+	ldc  (a.32)	t17 = &__tmp_string_5 + 0
+	call (s.32)	*t16 (t17)
+__done4:
+	ret 		

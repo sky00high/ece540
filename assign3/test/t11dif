@@ -1,0 +1,12 @@
+38c38
+< live_out 2 110000
+---
+> live_out 2 000000
+40c40
+< live_out 4 110000
+---
+> live_out 4 000000
+44c44
+< live_out 8 110000
+---
+> live_out 8 000000

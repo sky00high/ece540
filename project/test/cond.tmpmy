@@ -1,0 +1,51 @@
+variables main 4
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+
+def_lv_sets main 13
+def_lv 0 0000
+def_lv 1 1000
+def_lv 2 0100
+def_lv 3 0000
+def_lv 4 0010
+def_lv 5 0110
+def_lv 6 0000
+def_lv 7 1000
+def_lv 8 1001
+def_lv 9 0000
+def_lv 10 1000
+def_lv 11 0000
+def_lv 12 0000
+
+use_lv_sets main 13
+use_lv 0 0000
+use_lv 1 0000
+use_lv 2 0000
+use_lv 3 1100
+use_lv 4 0100
+use_lv 5 1010
+use_lv 6 0000
+use_lv 7 1000
+use_lv 8 0000
+use_lv 9 1001
+use_lv 10 1000
+use_lv 11 0001
+use_lv 12 0000
+
+live_variables main 13
+live_out 0 0000
+live_out 1 1000
+live_out 2 1100
+live_out 3 1100
+live_out 4 1010
+live_out 5 1000
+live_out 6 1000
+live_out 7 1000
+live_out 8 1001
+live_out 9 1001
+live_out 10 1001
+live_out 11 0000
+live_out 12 0000
+

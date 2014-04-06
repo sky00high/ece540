@@ -1,0 +1,284 @@
+variables f1 5
+var 1 r4
+var 2 r2
+var 3 r3
+var 4 r1
+var 5 r5
+
+def_lv_sets f1 6
+def_lv 0 00000
+def_lv 1 10100
+def_lv 2 10001
+def_lv 3 00100
+def_lv 4 00000
+def_lv 5 00000
+
+use_lv_sets f1 6
+use_lv 0 00000
+use_lv 1 01000
+use_lv 2 10110
+use_lv 3 00100
+use_lv 4 00001
+use_lv 5 00000
+
+live_variables f1 6
+live_out 0 01010
+live_out 1 10110
+live_out 2 10111
+live_out 3 10111
+live_out 4 00000
+live_out 5 00000
+
+variables f2 4
+var 1 r4
+var 2 r1
+var 3 r2
+var 4 r3
+
+def_lv_sets f2 9
+def_lv 0 0000
+def_lv 1 1010
+def_lv 2 0001
+def_lv 3 1000
+def_lv 4 0001
+def_lv 5 0000
+def_lv 6 0010
+def_lv 7 0000
+def_lv 8 0000
+
+use_lv_sets f2 9
+use_lv 0 0000
+use_lv 1 0100
+use_lv 2 0000
+use_lv 3 1001
+use_lv 4 0001
+use_lv 5 0000
+use_lv 6 0010
+use_lv 7 1000
+use_lv 8 0000
+
+live_variables f2 9
+live_out 0 0100
+live_out 1 1010
+live_out 2 1011
+live_out 3 1011
+live_out 4 1011
+live_out 5 1010
+live_out 6 1010
+live_out 7 0000
+live_out 8 0000
+
+variables f3 5
+var 1 r4
+var 2 r2
+var 3 r3
+var 4 r1
+var 5 r5
+
+def_lv_sets f3 6
+def_lv 0 00000
+def_lv 1 10100
+def_lv 2 10001
+def_lv 3 00100
+def_lv 4 00000
+def_lv 5 00000
+
+use_lv_sets f3 6
+use_lv 0 00000
+use_lv 1 01000
+use_lv 2 10110
+use_lv 3 00100
+use_lv 4 00001
+use_lv 5 00000
+
+live_variables f3 6
+live_out 0 01010
+live_out 1 10110
+live_out 2 10111
+live_out 3 10111
+live_out 4 00000
+live_out 5 00000
+
+variables f4 5
+var 1 r4
+var 2 r3
+var 3 r1
+var 4 r2
+var 5 r5
+
+def_lv_sets f4 6
+def_lv 0 00000
+def_lv 1 11000
+def_lv 2 10001
+def_lv 3 01000
+def_lv 4 00000
+def_lv 5 00000
+
+use_lv_sets f4 6
+use_lv 0 00000
+use_lv 1 00000
+use_lv 2 10110
+use_lv 3 01000
+use_lv 4 10000
+use_lv 5 00000
+
+live_variables f4 6
+live_out 0 00110
+live_out 1 11110
+live_out 2 11110
+live_out 3 11110
+live_out 4 00000
+live_out 5 00000
+
+variables f5 5
+var 1 r4
+var 2 r3
+var 3 r1
+var 4 r5
+var 5 r2
+
+def_lv_sets f5 9
+def_lv 0 00000
+def_lv 1 11000
+def_lv 2 00000
+def_lv 3 00010
+def_lv 4 00010
+def_lv 5 00000
+def_lv 6 01000
+def_lv 7 00000
+def_lv 8 00000
+
+use_lv_sets f5 9
+use_lv 0 00000
+use_lv 1 00000
+use_lv 2 10000
+use_lv 3 01100
+use_lv 4 01001
+use_lv 5 00000
+use_lv 6 01000
+use_lv 7 00010
+use_lv 8 00000
+
+live_variables f5 9
+live_out 0 00101
+live_out 1 11101
+live_out 2 11101
+live_out 3 11111
+live_out 4 11111
+live_out 5 11111
+live_out 6 11111
+live_out 7 00000
+live_out 8 00000
+
+variables f6 3
+var 1 r3
+var 2 r2
+var 3 r1
+
+def_lv_sets f6 12
+def_lv 0 000
+def_lv 1 110
+def_lv 2 000
+def_lv 3 010
+def_lv 4 010
+def_lv 5 000
+def_lv 6 010
+def_lv 7 010
+def_lv 8 100
+def_lv 9 010
+def_lv 10 000
+def_lv 11 000
+
+use_lv_sets f6 12
+use_lv 0 000
+use_lv 1 000
+use_lv 2 010
+use_lv 3 010
+use_lv 4 000
+use_lv 5 011
+use_lv 6 010
+use_lv 7 000
+use_lv 8 110
+use_lv 9 010
+use_lv 10 100
+use_lv 11 000
+
+live_variables f6 12
+live_out 0 001
+live_out 1 111
+live_out 2 111
+live_out 3 111
+live_out 4 111
+live_out 5 111
+live_out 6 111
+live_out 7 110
+live_out 8 110
+live_out 9 110
+live_out 10 000
+live_out 11 000
+
+variables f7 4
+var 1 r4
+var 2 r3
+var 3 r1
+var 4 r2
+
+def_lv_sets f7 9
+def_lv 0 0000
+def_lv 1 1100
+def_lv 2 0000
+def_lv 3 1000
+def_lv 4 1000
+def_lv 5 0000
+def_lv 6 0100
+def_lv 7 0000
+def_lv 8 0000
+
+use_lv_sets f7 9
+use_lv 0 0000
+use_lv 1 0000
+use_lv 2 0100
+use_lv 3 0010
+use_lv 4 0001
+use_lv 5 0000
+use_lv 6 0100
+use_lv 7 1000
+use_lv 8 0000
+
+live_variables f7 9
+live_out 0 0011
+live_out 1 0111
+live_out 2 0111
+live_out 3 1111
+live_out 4 1111
+live_out 5 1111
+live_out 6 1111
+live_out 7 0000
+live_out 8 0000
+
+variables main 9
+var 1 r1
+var 2 r3
+var 3 r4
+var 4 r5
+var 5 r6
+var 6 r7
+var 7 r8
+var 8 r9
+var 9 r2
+
+def_lv_sets main 3
+def_lv 0 000000000
+def_lv 1 111111111
+def_lv 2 000000000
+
+use_lv_sets main 3
+use_lv 0 000000000
+use_lv 1 000000000
+use_lv 2 000000000
+
+live_variables main 3
+live_out 0 000000000
+live_out 1 000000000
+live_out 2 000000000
+

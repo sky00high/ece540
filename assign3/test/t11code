@@ -1,0 +1,42 @@
+
+Procedure ae_test:
+	cvt  (u.32)	t7 = r1
+	not  (u.32)	t8 = t7
+	cvt  (s.32)	t9 = t8
+	cpy  (s.32)	r2 = t9
+	ldc  (s.32)	t10 = 1
+	seq  (s.32)	t11 = r1, t10
+	bfls		t11, L1
+	ldc  (s.32)	t12 = 0
+	ret 		t12
+L1:
+	cvt  (u.32)	t13 = r1
+	not  (u.32)	t14 = t13
+	cvt  (s.32)	t15 = t14
+	cpy  (s.32)	r3 = t15
+	ldc  (s.32)	t16 = 2
+	seq  (s.32)	t17 = r1, t16
+	bfls		t17, L2
+	ldc  (s.32)	t18 = 0
+	ret 		t18
+L2:
+	cvt  (u.32)	t19 = r2
+	not  (u.32)	t20 = t19
+	cvt  (s.32)	t21 = t20
+	cpy  (s.32)	r4 = t21
+	ldc  (s.32)	t22 = 3
+	seq  (s.32)	t23 = r1, t22
+	bfls		t23, L3
+	add  (s.32)	t24 = r2, r1
+	cpy  (s.32)	r5 = t24
+L3:
+	ldc  (s.32)	t25 = 4
+	seq  (s.32)	t26 = r1, t25
+	bfls		t26, L4
+	ldc  (s.32)	t27 = 0
+	ret 		t27
+L4:
+	add  (s.32)	t28 = r1, r2
+	cpy  (s.32)	r6 = t28
+	ldc  (s.32)	t29 = 0
+	ret 		t29

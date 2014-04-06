@@ -1,0 +1,280 @@
+variables use 1
+var 1 r1
+
+def_lv_sets use 3
+def_lv 0 0
+def_lv 1 0
+def_lv 2 0
+
+use_lv_sets use 3
+use_lv 0 0
+use_lv 1 1
+use_lv 2 0
+
+live_variables use 3
+live_out 0 1
+live_out 1 0
+live_out 2 0
+
+variables live_out_test1 6
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+var 5 r5
+var 6 r6
+
+def_lv_sets live_out_test1 13
+def_lv 0 000000
+def_lv 1 111111
+def_lv 2 000000
+def_lv 3 000000
+def_lv 4 000000
+def_lv 5 000000
+def_lv 6 000000
+def_lv 7 000000
+def_lv 8 000000
+def_lv 9 000000
+def_lv 10 000000
+def_lv 11 000000
+def_lv 12 000000
+
+use_lv_sets live_out_test1 13
+use_lv 0 000000
+use_lv 1 000000
+use_lv 2 010000
+use_lv 3 100000
+use_lv 4 001000
+use_lv 5 100000
+use_lv 6 000100
+use_lv 7 100000
+use_lv 8 000010
+use_lv 9 100000
+use_lv 10 000001
+use_lv 11 000001
+use_lv 12 000000
+
+live_variables live_out_test1 13
+live_out 0 000000
+live_out 1 111111
+live_out 2 101111
+live_out 3 101111
+live_out 4 100111
+live_out 5 100111
+live_out 6 100011
+live_out 7 100011
+live_out 8 100001
+live_out 9 000001
+live_out 10 000001
+live_out 11 000000
+live_out 12 000000
+
+variables live_out_test2 6
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+var 5 r5
+var 6 r6
+
+def_lv_sets live_out_test2 13
+def_lv 0 000000
+def_lv 1 111111
+def_lv 2 000000
+def_lv 3 000000
+def_lv 4 000000
+def_lv 5 000000
+def_lv 6 000000
+def_lv 7 000000
+def_lv 8 000000
+def_lv 9 000000
+def_lv 10 000000
+def_lv 11 000000
+def_lv 12 000000
+
+use_lv_sets live_out_test2 13
+use_lv 0 000000
+use_lv 1 000000
+use_lv 2 110000
+use_lv 3 101000
+use_lv 4 100100
+use_lv 5 100010
+use_lv 6 000001
+use_lv 7 000000
+use_lv 8 000000
+use_lv 9 000000
+use_lv 10 000000
+use_lv 11 000001
+use_lv 12 000000
+
+live_variables live_out_test2 13
+live_out 0 000000
+live_out 1 111111
+live_out 2 101111
+live_out 3 100111
+live_out 4 100011
+live_out 5 000001
+live_out 6 000001
+live_out 7 000001
+live_out 8 000001
+live_out 9 000001
+live_out 10 000001
+live_out 11 000000
+live_out 12 000000
+
+variables live_out_test3 6
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+var 5 r5
+var 6 r6
+
+def_lv_sets live_out_test3 13
+def_lv 0 000000
+def_lv 1 111111
+def_lv 2 010000
+def_lv 3 001000
+def_lv 4 000100
+def_lv 5 000010
+def_lv 6 000001
+def_lv 7 000000
+def_lv 8 000000
+def_lv 9 000000
+def_lv 10 100000
+def_lv 11 000000
+def_lv 12 000000
+
+use_lv_sets live_out_test3 13
+use_lv 0 000000
+use_lv 1 000000
+use_lv 2 110000
+use_lv 3 101000
+use_lv 4 100100
+use_lv 5 100010
+use_lv 6 000001
+use_lv 7 000000
+use_lv 8 000000
+use_lv 9 000000
+use_lv 10 000000
+use_lv 11 000001
+use_lv 12 000000
+
+live_variables live_out_test3 13
+live_out 0 000000
+live_out 1 111111
+live_out 2 101111
+live_out 3 100111
+live_out 4 100011
+live_out 5 000001
+live_out 6 000001
+live_out 7 000001
+live_out 8 000001
+live_out 9 000001
+live_out 10 000001
+live_out 11 000000
+live_out 12 000000
+
+variables live_out_test4 6
+var 1 r1
+var 2 r2
+var 3 r3
+var 4 r4
+var 5 r5
+var 6 r6
+
+def_lv_sets live_out_test4 24
+def_lv 0 000000
+def_lv 1 111111
+def_lv 2 000000
+def_lv 3 010000
+def_lv 4 001000
+def_lv 5 000100
+def_lv 6 000010
+def_lv 7 000001
+def_lv 8 100000
+def_lv 9 000000
+def_lv 10 000000
+def_lv 11 100000
+def_lv 12 000000
+def_lv 13 000000
+def_lv 14 100000
+def_lv 15 000000
+def_lv 16 000000
+def_lv 17 100000
+def_lv 18 000000
+def_lv 19 000000
+def_lv 20 100000
+def_lv 21 100000
+def_lv 22 000000
+def_lv 23 000000
+
+use_lv_sets live_out_test4 24
+use_lv 0 000000
+use_lv 1 000000
+use_lv 2 100000
+use_lv 3 110000
+use_lv 4 101000
+use_lv 5 100100
+use_lv 6 100010
+use_lv 7 100001
+use_lv 8 100000
+use_lv 9 000000
+use_lv 10 100000
+use_lv 11 100000
+use_lv 12 000000
+use_lv 13 100000
+use_lv 14 100000
+use_lv 15 000000
+use_lv 16 100000
+use_lv 17 100000
+use_lv 18 000000
+use_lv 19 100000
+use_lv 20 100000
+use_lv 21 000000
+use_lv 22 000001
+use_lv 23 000000
+
+live_variables live_out_test4 24
+live_out 0 000000
+live_out 1 111111
+live_out 2 111111
+live_out 3 111111
+live_out 4 111111
+live_out 5 111111
+live_out 6 111111
+live_out 7 111111
+live_out 8 111111
+live_out 9 111111
+live_out 10 111111
+live_out 11 111111
+live_out 12 111111
+live_out 13 111111
+live_out 14 111111
+live_out 15 111111
+live_out 16 111111
+live_out 17 111111
+live_out 18 111111
+live_out 19 111111
+live_out 20 111111
+live_out 21 000001
+live_out 22 000000
+live_out 23 000000
+
+variables main 0
+
+def_lv_sets main 3
+def_lv 0 
+def_lv 1 
+def_lv 2 
+
+use_lv_sets main 3
+use_lv 0 
+use_lv 1 
+use_lv 2 
+
+live_variables main 3
+live_out 0 
+live_out 1 
+live_out 2 
+

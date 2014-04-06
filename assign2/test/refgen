@@ -1,0 +1,5 @@
+#!/bin/csh
+
+foreach i (`seq 1 1 12`)
+	/cad2/ece540s/reference/assign2Ref t$i.tmp > t$i"ref"
+end

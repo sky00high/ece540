@@ -1,0 +1,67 @@
+
+Procedure cascading:
+	ldc  (s.32)	t12 = 0
+	sne  (s.32)	t13 = r2, t12
+	bfls		t13, L1
+	ldc  (s.32)	t14 = 0
+	sne  (s.32)	t15 = r3, t14
+	bfls		t15, L2
+	ldc  (s.32)	t16 = 0
+	sne  (s.32)	t17 = r4, t16
+	bfls		t17, L3
+	ldc  (s.32)	t18 = 0
+	sne  (s.32)	t19 = r5, t18
+	bfls		t19, L4
+	ldc  (s.32)	t20 = 0
+	sne  (s.32)	t21 = r6, t20
+	bfls		t21, L5
+	ldc  (s.32)	t22 = 0
+	sne  (s.32)	t23 = r7, t22
+	bfls		t23, L6
+	ldc  (s.32)	t24 = 0
+	sne  (s.32)	t25 = r8, t24
+	bfls		t25, L7
+	ldc  (s.32)	t26 = 0
+	sne  (s.32)	t27 = r9, t26
+	bfls		t27, L8
+	ldc  (s.32)	t28 = 0
+	sne  (s.32)	t29 = r10, t28
+	bfls		t29, L9
+	ldc  (s.32)	t30 = 0
+	sl   (s.32)	t31 = t30, r1
+	bfls		t31, L12
+	ldc  (s.32)	t32 = 0
+	cpy  (s.32)	r11 = t32
+L13:
+	ldc  (s.32)	t33 = 0
+	cpy  (s.32)	r10 = t33
+	cpy  (s.32)	r9 = r10
+	cpy  (s.32)	r8 = r9
+	cpy  (s.32)	r7 = r8
+	cpy  (s.32)	r6 = r7
+	cpy  (s.32)	r5 = r6
+	cpy  (s.32)	r4 = r5
+	cpy  (s.32)	r3 = r4
+	cpy  (s.32)	r2 = r3
+L10:
+	ldc  (s.32)	t34 = 1
+	add  (s.32)	t35 = r11, t34
+	cpy  (s.32)	r11 = t35
+	sle  (s.32)	t36 = r1, r11
+	bfls		t36, L13
+L11:
+	jmp 		__done14
+L12:
+	ldc  (s.32)	t37 = 0
+	cpy  (s.32)	r11 = t37
+__done14:
+L9:
+L8:
+L7:
+L6:
+L5:
+L4:
+L3:
+L2:
+L1:
+	ret 		r11

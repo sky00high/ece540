@@ -1,0 +1,3 @@
+#!/bin/csh
+
+/cad2/ece540s/reference/assign$1Ref $2

@@ -1,0 +1,42 @@
+variables weird_loop 4
+var 1 r3
+var 2 r4
+var 3 r1
+var 4 r2
+
+def_lv_sets weird_loop 10
+def_lv 0 0000
+def_lv 1 1000
+def_lv 2 0100
+def_lv 3 0000
+def_lv 4 0000
+def_lv 5 1010
+def_lv 6 1001
+def_lv 7 0000
+def_lv 8 0000
+def_lv 9 0000
+
+use_lv_sets weird_loop 10
+use_lv 0 0000
+use_lv 1 0000
+use_lv 2 0010
+use_lv 3 0100
+use_lv 4 0000
+use_lv 5 1001
+use_lv 6 1010
+use_lv 7 0000
+use_lv 8 0000
+use_lv 9 0000
+
+live_variables weird_loop 10
+live_out 0 0011
+live_out 1 1011
+live_out 2 1111
+live_out 3 1010
+live_out 4 0000
+live_out 5 1011
+live_out 6 1011
+live_out 7 0000
+live_out 8 0000
+live_out 9 0000
+

@@ -1,0 +1,105 @@
+
+Procedure main:
+	ldc  (s.32)	t21 = 0
+	sne  (s.32)	t22 = r5, t21
+	bfls		t22, L1
+	ldc  (s.32)	t23 = 1
+	cpy  (s.32)	r6 = t23
+L1:
+	ldc  (s.32)	t24 = 0
+	sne  (s.32)	t25 = r1, t24
+	cpy  (s.32)	r7 = t25
+	btru		r7, L2
+	cpy  (s.32)	r8 = r7
+	jmp 		__done14
+L2:
+	ldc  (s.32)	t26 = 0
+	sne  (s.32)	t27 = r2, t26
+	cpy  (s.32)	r8 = t27
+__done14:
+	bfls		r8, L3
+	ldc  (s.32)	t28 = 1
+	cpy  (s.32)	r5 = t28
+L3:
+	ldc  (s.32)	t29 = 0
+	sne  (s.32)	t30 = r1, t29
+	cpy  (s.32)	r9 = t30
+	bfls		r9, L4
+	cpy  (s.32)	r10 = r9
+	jmp 		__done15
+L4:
+	ldc  (s.32)	t31 = 0
+	sne  (s.32)	t32 = r2, t31
+	cpy  (s.32)	r10 = t32
+__done15:
+	bfls		r10, L5
+	ldc  (s.32)	t33 = 1
+	cpy  (s.32)	r5 = t33
+L5:
+	ldc  (s.32)	t34 = 0
+	sne  (s.32)	t35 = r1, t34
+	cpy  (s.32)	r11 = t35
+	bfls		r11, L6
+	cpy  (s.32)	r12 = r11
+	jmp 		__done16
+L6:
+	ldc  (s.32)	t36 = 0
+	sne  (s.32)	t37 = r3, t36
+	cpy  (s.32)	r12 = t37
+__done16:
+	btru		r12, L8
+	cpy  (s.32)	r15 = r12
+	jmp 		__done18
+L8:
+	ldc  (s.32)	t38 = 0
+	sne  (s.32)	t39 = r2, t38
+	cpy  (s.32)	r13 = t39
+	bfls		r13, L7
+	cpy  (s.32)	r14 = r13
+	jmp 		__done17
+L7:
+	ldc  (s.32)	t40 = 0
+	sne  (s.32)	t41 = r4, t40
+	cpy  (s.32)	r14 = t41
+__done17:
+	cpy  (s.32)	r15 = r14
+__done18:
+	bfls		r15, L9
+	ldc  (s.32)	t42 = 1
+	cpy  (s.32)	r5 = t42
+L9:
+	ldc  (s.32)	t43 = 0
+	sne  (s.32)	t44 = r1, t43
+	cpy  (s.32)	r16 = t44
+	btru		r16, L10
+	cpy  (s.32)	r17 = r16
+	jmp 		__done19
+L10:
+	ldc  (s.32)	t45 = 0
+	sne  (s.32)	t46 = r3, t45
+	cpy  (s.32)	r17 = t46
+__done19:
+	bfls		r17, L12
+	cpy  (s.32)	r20 = r17
+	jmp 		__done21
+L12:
+	ldc  (s.32)	t47 = 0
+	sne  (s.32)	t48 = r2, t47
+	cpy  (s.32)	r18 = t48
+	btru		r18, L11
+	cpy  (s.32)	r19 = r18
+	jmp 		__done20
+L11:
+	ldc  (s.32)	t49 = 0
+	sne  (s.32)	t50 = r4, t49
+	cpy  (s.32)	r19 = t50
+__done20:
+	cpy  (s.32)	r20 = r19
+__done21:
+	bfls		r20, L13
+	ldc  (s.32)	t51 = 1
+	cpy  (s.32)	r5 = t51
+L13:
+	ldc  (a.32)	t52 = &exit + 0
+	call (s.32)	*t52 (r5)
+	ret 		

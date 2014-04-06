@@ -1,0 +1,9 @@
+Assignment 4 by Tianyu Yang
+
+An Expression class is derived with oveloaded operator for using as key with std::Map.  This made my life much easier because allowing me using map also allows me to copy a lot of code from last assignment.
+
+According to the feedback from last lab I have designed a general DFA engine. For now I only tested forward allway case for available expression. When nessesary in the future, I can add feature and complete that class.
+
+Thank you very much for your help.
+
+

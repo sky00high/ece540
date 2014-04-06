@@ -1,0 +1,46 @@
+
+Procedure loop_label_at_bottom:
+	ldc  (s.32)	t6 = 0
+	cpy  (s.32)	r2 = t6
+	cpy  (s.32)	r3 = r1
+	jmp 		L1
+L2:
+	ldc  (s.32)	t7 = 0
+	seq  (s.32)	t8 = r3, t7
+	bfls		t8, L3
+	jmp 		Lend
+L3:
+	ldc  (s.32)	t9 = 1
+	sub  (s.32)	t10 = r3, t9
+	cpy  (s.32)	r3 = t10
+	ldc  (s.32)	t11 = 2
+	add  (s.32)	t12 = r2, t11
+	cpy  (s.32)	r2 = t12
+	cvt  (u.32)	t13 = r3
+	ldc  (u.32)	t14 = 1
+	and  (u.32)	t15 = t13, t14
+	cvt  (s.32)	t16 = t15
+	ldc  (s.32)	t17 = 1
+	seq  (s.32)	t18 = t16, t17
+	cpy  (s.32)	r4 = t18
+	btru		r4, L4
+	cpy  (s.32)	r5 = r4
+	jmp 		__done6
+L4:
+	cvt  (u.32)	t19 = r1
+	ldc  (u.32)	t20 = 1
+	and  (u.32)	t21 = t19, t20
+	cvt  (s.32)	t22 = t21
+	ldc  (s.32)	t23 = 1
+	seq  (s.32)	t24 = t22, t23
+	cpy  (s.32)	r5 = t24
+__done6:
+	bfls		r5, L5
+	ldc  (s.32)	t25 = 1
+	sub  (s.32)	t26 = r2, t25
+	cpy  (s.32)	r2 = t26
+L5:
+L1:
+	jmp 		L2
+Lend:
+	ret 		r2

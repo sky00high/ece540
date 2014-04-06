@@ -1,0 +1,6 @@
+#!/bin/csh
+
+foreach i (`seq 1 1 15`)
+	echo "generating case # $i"
+	../src/cpp/hw3 t$i.tmp > t$i"my"
+end

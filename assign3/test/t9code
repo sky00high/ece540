@@ -1,0 +1,36 @@
+
+Procedure weird_loop:
+	ldc  (s.32)	t5 = 0
+	cpy  (s.32)	r3 = t5
+Ltop:
+	cpy  (s.32)	r4 = r1
+	ldc  (s.32)	t6 = 0
+	seq  (s.32)	t7 = r4, t6
+	btru		t7, L2
+	ldc  (s.32)	t8 = 1
+	seq  (s.32)	t9 = r4, t8
+	btru		t9, L3
+	jmp 		L4
+L2:
+	ldc  (s.32)	t10 = 16
+	mul  (s.32)	t11 = t10, r2
+	cpy  (s.32)	r1 = t11
+	ldc  (s.32)	t12 = 1
+	add  (s.32)	t13 = r3, t12
+	cpy  (s.32)	r3 = t13
+	jmp 		Ltop
+L3:
+	ldc  (s.32)	t14 = 16
+	mul  (s.32)	t15 = t14, r1
+	cpy  (s.32)	r2 = t15
+	ldc  (s.32)	t16 = 1
+	sub  (s.32)	t17 = r3, t16
+	cpy  (s.32)	r3 = t17
+	jmp 		Ltop
+L4:
+	jmp 		L1
+L1:
+	ldc  (a.32)	t18 = &printf + 0
+	ldc  (a.32)	t19 = &__tmp_string_0 + 0
+	call (s.32)	*t18 (t19)
+	ret 		

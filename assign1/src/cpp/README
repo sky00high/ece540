@@ -1,0 +1,5 @@
+Sorry for my poor planning. This assignment turns out to be much more difficult than I thought, thus the late submission.
+
+I tried to use a modula design, so later assignments can use the cfg I generated today easily. I haven't touch objective-oriented programming for years, I used some container(map and set) in C++ STL as suggested by lab handout, and they give me a relatively much eaiser life. 
+
+All code used to generate Dominator is copied from handout. 

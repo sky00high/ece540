@@ -1,0 +1,8 @@
+In this assignment, I took advantage of my old class's modulazation and implemented this assignemnt rather easily.
+
+I created a new class called BitVector for the easy of set operations.
+
+Because my old code doesn't handle ret correctly, so I will faile test 11. I don't have enough time to fix this but willdo next time.
+
+Cheers!!
+
