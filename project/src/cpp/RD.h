@@ -55,10 +55,13 @@ class RD {
 		int getDefNum(){return defNum;}
 	//Genset public
 		void genGenSet();
+		void printGenSet();
 		//Killset public
 		void genKillSet();
+		void printKillSet();
 		//RDout
 		void genRDOutSet();
+		void printRDOutSet();
 		
 	/*
 		//part2

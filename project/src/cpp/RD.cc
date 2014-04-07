@@ -80,7 +80,8 @@ Definition RD::findDefIndex(int index){
 
 void RD::printDefList(){
 	for(int i = 1; i <= defNum; i++){
-		cout<<"def "<<i<<" "<<findDefIndex(i).instrIndex<<endl;
+		cout<<"def "<<i<<" "<<findDefIndex(i).instrIndex
+				<<" r"<<findDefIndex(i).instr->u.base.dst->num<<endl;
 	}
 }
 
@@ -104,8 +105,11 @@ int RD::getIndexInstr(simple_instr *instr){
 }
 
 bool RD::defIsRedefined(simple_instr *instr, int var){
-	assert(isDef(instr));
-	return instr->u.base.dst->num == var;
+	if(isDef(instr)){
+		return instr->u.base.dst->num == var;
+	} else {
+		return false;
+	}
 }
 
 void RD::genGenBlock(int blockIndex){
@@ -117,8 +121,7 @@ void RD::genGenBlock(int blockIndex){
 	if(start != NULL) while(true){
 		if(isDef(tracer)){
 			bool isDefinedAfter = false;
-			simple_instr *tracer2 = tracer;
-			Definition newDef(tracer,getIndexInstr(tracer));
+			simple_instr *tracer2 = tracer->next;
 			int var = tracer->u.base.dst->num;
 			while(tracer2!=end->next){
 				if(defIsRedefined(tracer2,var)){
@@ -128,7 +131,8 @@ void RD::genGenBlock(int blockIndex){
 			}
 
 			if(!isDefinedAfter){
-				assert(defMap.count(newDef) == 0);
+				Definition newDef(tracer,getIndexInstr(tracer));
+				assert(defMap.count(newDef) != 0);
 				genSet[blockIndex].set(defMap[newDef] - 1);
 			}
 		}
@@ -142,6 +146,12 @@ void RD::genGenSet(){
 	iniGenSet();
 	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
 		genGenBlock(i);
+	}
+}
+
+void RD::printGenSet(){
+	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
+		cout <<"genRD " <<i<<" "<<genSet[i]<<endl;
 	}
 }
 ////////////////////////////////////////////////////////////////////////
@@ -186,9 +196,10 @@ void RD::genKillBlock(int blockIndex){
 		if(isDef(tracer)){
 			for(map<Definition, int>::const_iterator ite = defMap.begin();
 				ite != defMap.end(); ite++){
-				if(!instrInBB(tracer,blockIndex) &&
-						instrSameDest(tracer,ite->first.instr))
-					killSet[blockIndex].set(ite->second-1);
+				if(!instrInBB(ite->first.instr,blockIndex)) {
+					if(instrSameDest(tracer,ite->first.instr))
+						killSet[blockIndex].set(ite->second-1);
+				}
 			}
 		}
 		if(tracer == end) break;
@@ -206,6 +217,11 @@ void RD::genKillSet(){
 }
 
 
+void RD::printKillSet(){
+	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
+		cout <<"killRD " <<i<<" "<<killSet[i]<<endl;
+	}
+}
 ////////////////////////////////////////////////////////
 //RDSET
 ////////////////////////////////////////////////////////
@@ -218,5 +234,8 @@ void RD::genRDOutSet(){
 	this->RDOutSet = newDFA.getOutSet();
 }
 
-
-
+void RD::printRDOutSet(){
+	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
+		cout <<"RDOut " <<i<<" "<<RDOutSet[i]<<endl;
+	}
+}

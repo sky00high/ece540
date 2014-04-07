@@ -6,7 +6,8 @@ extern "C" {
 #include  "cfg.h"
 #include "RD.h"
 #include "DFG.h"
-#include "ae.h"
+#include "RD.h"
+#include "print.h"
 // data structures you should consider using are vector and hash_map from the STL
 // refer to the following link as a starting point if you are not familiar with them: 
 // http://www.sgi.com/tech/stl/Vector.html
@@ -23,8 +24,26 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();
 	 RD *thisRD = new RD(thisCFG,inlist);
+
 	 thisRD->genDefList();
+	 cout<<"Definitions "<<proc_name<<" "<<thisRD->getDefNum()<<endl;
 	 thisRD->printDefList();
+	 cout<<endl;
+
+	 thisRD->genGenSet();
+	 cout<<"eval_RD_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
+	 thisRD->printGenSet();
+	 cout<<endl;
+
+	 thisRD->genKillSet();
+	 cout<<"kill_RD_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
+	 thisRD->printKillSet();
+	 cout<<endl;
+
+	 thisRD->genRDOutSet();
+	 cout<<"available_exprs "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
+	 thisRD->printRDOutSet();
+	 cout<<endl;
 	 delete thisCFG;
 	 delete thisRD;
 	 //thisCFG->printBlock();
@@ -35,38 +54,38 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 //	 thisCFG->findREdge();
 
 /*
-	 AE *thisAE = new AE(thisCFG,inlist);
-	 thisAE->genExprList();
-	 cout<<"expressions "<<proc_name<<" "<<thisAE->getExprNum()<<endl;
-	 thisAE->printExprList();
+	 RD *thisRD = new RD(thisCFG,inlist);
+	 thisRD->genExprList();
+	 cout<<"expressions "<<proc_name<<" "<<thisRD->getExprNum()<<endl;
+	 thisRD->printExprList();
 	 cout<<endl;
 
-	 thisAE->genEvalSet();
-	 cout<<"eval_ae_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
-	 thisAE->printEvalSet();
+	 thisRD->genEvalSet();
+	 cout<<"eval_RD_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
+	 thisRD->printEvalSet();
 	 cout<<endl;
 
-	 thisAE->genKillSet();
-	 cout<<"kill_ae_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
-	 thisAE->printKillSet();
+	 thisRD->genKillSet();
+	 cout<<"kill_RD_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
+	 thisRD->printKillSet();
 	 cout<<endl;
 
-	 thisAE->genAeOutSet();
+	 thisRD->genAeOutSet();
 	 cout<<"available_exprs "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
-	 thisAE->printAeOutSet();
+	 thisRD->printAeOutSet();
 	 cout<<endl;
 	 */
 	 
 
 	 /*
 	 cout<<endl;
-	 thisAE->genUseSet();
+	 thisRD->genUseSet();
 	 cout<<"use_lv_sets "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
-	 thisAE->printUseSet();
+	 thisRD->printUseSet();
 	 cout<<endl;
-	 thisAE->genLiveOut();
+	 thisRD->genLiveOut();
 	 cout<<"live_variables "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
-	 thisAE->printLiveOut();
+	 thisRD->printLiveOut();
 	 cout<<endl;
 	 */
 
