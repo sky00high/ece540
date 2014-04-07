@@ -19,3 +19,11 @@
 *.exe
 *.out
 *.app
+
+*.tmp
+*my
+*ref
+*code
+
+*.swp
+*.swo
