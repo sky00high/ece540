@@ -1,31 +1,30 @@
-#ifndef RE_H
-#define RE_H 
+#ifndef RD_H
+#define RD_H 
 #include "BitVector.h"
 #include <assert.h>
 #include <map>
 #include <stdio.h>
 #include "cfg.h"
-#include "Expression.h"
+#include "Definition.h"
 extern "C"{
 	#include <simple.h>
 }
 
-class RE {
+class RD {
 	CFG *cfg;
-   map <Expression, int> exprMap;
+   map <Definition, int> defMap;
 	simple_instr *inlist;
 	
 	map<int,BitVector> evalSet;
 	map<int, BitVector> killSet;
-	map<int, BitVector> REOutSet;
+	map<int, BitVector> RDOutSet;
 	
-	bool isCVT(simple_instr*);
-	//part1 helpers
 	simple_instr *findInstr(int);
-	Expression findExprIndex(int);
-	bool isBinaryInstr(simple_instr *);
 	bool isPseudoReg(simple_reg*);
-	//part2 helpers
+	int defNum;
+	bool isDef(simple_instr *instr);
+	Definition findDefIndex(int index);
+	/*
 	void iniEvalSet();
 	bool isExpr(simple_instr*);
 	void genEvalBlock(int);
@@ -33,15 +32,15 @@ class RE {
 	//part3 helpers
 	void iniKillSet();
 	void genKillBlock(int);
-
+*/
 	public:
-	RE(CFG *cfg, simple_instr *inlist);
+	RD(CFG *cfg, simple_instr *inlist);
 
 	//part1
-	void genExprList();
-	void printExprList();
-	int getExprNum(){return exprNum;}
-
+	void genDefList();
+	void printDefList();
+	int getDefNum(){return defNum;}
+/*
 	//part2
 	void genEvalSet();
 	void printEvalSet();
@@ -50,12 +49,7 @@ class RE {
 	void genKillSet();
 	void printKillSet();
 
-		
-
-
-
-
-
+*/		
 
 };
 
