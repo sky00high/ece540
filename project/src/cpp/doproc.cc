@@ -4,6 +4,7 @@ extern "C" {
 }
 
 #include  "cfg.h"
+#include "RD.h"
 #include "DFG.h"
 #include "ae.h"
 // data structures you should consider using are vector and hash_map from the STL
@@ -16,6 +17,16 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
     // build flow control graph 
 	 CFG *thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();
+	 thisCFG->genLoopHeader();
+	 delete thisCFG;
+
+	 thisCFG = new CFG(inlist);
+	 thisCFG->findIDom();
+	 RD *thisRD = new RD(thisCFG,inlist);
+	 thisRD->genDefList();
+	 thisRD->printDefList();
+	 delete thisCFG;
+	 delete thisRD;
 	 //thisCFG->printBlock();
 	// thisCFG->genLoopHeader();
 	 //delete thisCFG;
@@ -23,6 +34,7 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 //	 thisCFG->findIDom();
 //	 thisCFG->findREdge();
 
+/*
 	 AE *thisAE = new AE(thisCFG,inlist);
 	 thisAE->genExprList();
 	 cout<<"expressions "<<proc_name<<" "<<thisAE->getExprNum()<<endl;
@@ -43,6 +55,7 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 cout<<"available_exprs "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
 	 thisAE->printAeOutSet();
 	 cout<<endl;
+	 */
 	 
 
 	 /*
@@ -56,8 +69,6 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisAE->printLiveOut();
 	 cout<<endl;
 	 */
-	 delete thisCFG;
-	 delete thisAE;
 
 
     // find immediate dominators    

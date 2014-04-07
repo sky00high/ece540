@@ -2,6 +2,6 @@
 rm -i -f *my
 foreach i (`ls *.tmp`)
 	echo "generating case  $i"
-	../../assign2/src/cpp/hw2 $i > $i"my"
+	../src/cpp/project $i > $i"my"
 
 end
