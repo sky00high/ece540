@@ -23,8 +23,10 @@ class UDChain{
 	void buildUDChainBlock(int blockIndex);
 
 
+
 	public:
 		UDChain(simple_instr *inlist, CFG *cfg, RD *rd); 
+		~UDChain();
 		
 		void setEdge(int start, int end);
 		void clearEdge(int start, int end);

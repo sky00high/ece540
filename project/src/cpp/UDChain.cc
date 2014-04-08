@@ -39,7 +39,7 @@ void UDChain::checkReg(simple_instr *instr,int blockIndex,simple_reg *lereg){
 		simple_instr *tracer = start;
 		bool isRedefined = false;
 		simple_instr *lastDefined = NULL;
-		while(start != instr){
+		while(tracer != instr){
 			if(rd->isDef(tracer)){
 				if(tracer->u.base.dst->num == lereg->num){
 					isRedefined = true;
@@ -80,13 +80,11 @@ void UDChain::checkVar(int blockIndex, simple_instr *tracer){
 			 checkReg(tracer,blockIndex, tracer->u.base.src2);
 			 break;
 		}
-
 		case MCPY_OP: {
 			 checkReg(tracer,blockIndex, tracer->u.base.src1);
 			 checkReg(tracer,blockIndex, tracer->u.base.src2);
 			 break;
 		}
-
 		case LDC_OP: {
 			//check
 			 break;
@@ -99,7 +97,6 @@ void UDChain::checkVar(int blockIndex, simple_instr *tracer){
 			 checkReg(tracer,blockIndex, tracer->u.bj.src);
 			 break;
 		}
-
 		case CALL_OP: {
 			 unsigned n, nargs;
 			 checkReg(tracer,blockIndex, tracer->u.call.proc);
@@ -184,4 +181,9 @@ UDChain::UDChain(simple_instr *inlist, CFG *cfg, RD *rd){
 }
 
 
-
+UDChain::~UDChain(){
+	for(int i = 0; i < instrNum; i++){
+			delete [] UDGraph[i];
+	}
+	delete [] UDGraph;
+}

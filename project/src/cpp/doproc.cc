@@ -7,6 +7,7 @@ extern "C" {
 #include "RD.h"
 #include "DFG.h"
 #include "RD.h"
+#include "UDChain.h"
 // data structures you should consider using are vector and hash_map from the STL
 // refer to the following link as a starting point if you are not familiar with them: 
 // http://www.sgi.com/tech/stl/Vector.html
@@ -43,6 +44,8 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 cout<<"available_exprs "<<proc_name<<" "<<thisCFG->getTotalBlockNum()<<endl;
 	 thisRD->printRDOutSet();
 	 cout<<endl;
+
+	 UDChain udChian(inlist, thisCFG, thisRD);
 	 delete thisCFG;
 	 delete thisRD;
     return inlist;
