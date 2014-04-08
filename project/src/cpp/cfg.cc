@@ -640,4 +640,8 @@ int CFG::getInstrNum(simple_instr *instr){
 	assert(false);
 }
 
+int CFG::findIndexInstr(simple_instr *instr){
+	return getInstrNum(simple_instr *instr);
+}
+
 

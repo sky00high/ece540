@@ -16,7 +16,7 @@ class LICM{
 	UDChain *udChain;
 
 	bool isDef(simple_instr *instr);
-	bool opIsIV(simple_instr *instr);
+	bool opIsIV(simple_instr *instr, set<int> LI);
 	void moveCodeToPreheader(int preHeader, set<int> LI);
 
 	public:

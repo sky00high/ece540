@@ -107,6 +107,7 @@ class CFG {
 		void genLoopSet();
 		map<int,set<int>> getLoopSet() const{ return loopSet;}
 		int getLoopNum() const{return loopNum;}
+		int findIndexInstr(simple_instr *instr);
 
 };
 
