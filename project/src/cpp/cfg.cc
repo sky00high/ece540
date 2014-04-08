@@ -474,10 +474,12 @@ CFG::CFG(simple_instr *inlist){
 	
 	map <int,int> leadVector;
 	this->totalBlockNum = 0;
+	this->loopNum = 0;
 	this->totalInstrNum = buildLeadVector(inlist, leadVector);
 	this->inlist = inlist;
 	iniBasicBlock(inlist, leadVector);
 	buildCFG(inlist);
+	loopGenerated = false;
 }
 
 //A2part2
@@ -517,6 +519,40 @@ set<int> CFG::findLoop(int start, int end){
 }
 
 
+void CFG::genLoopSet(){
+	if(loopGenerated == true) return;
+	set<edge>::iterator edgeIte = rEdge.begin();
+
+	int loopIndex = 0;
+
+	while(edgeIte != rEdge.end()){
+		set<int> loop = findLoop(edgeIte->end,edgeIte->start);
+		int startBlockNum = edgeIte->end;
+		set<int> backedge;
+		backedge.insert(edgeIte->start);
+		
+
+		edgeIte++;
+		//the rEdge is sorted by the end of edge that is why this while loop will work
+		while(edgeIte->end == startBlockNum && edgeIte != rEdge.end()){
+			backedge.insert(edgeIte->start);
+			set<int> newLoop = findLoop(edgeIte->end, edgeIte->start);
+			for(set<int>::iterator newLoopIte = newLoop.begin(); 
+					newLoopIte != newLoop.end();newLoopIte++){
+				loop.insert(*newLoopIte);
+			}
+			edgeIte++;
+		}
+		for(set<int>::iterator loopIte = loop.begin(); loopIte != loop.end(); loopIte ++){
+			cout<<" "<<*loopIte;
+		}
+		cout<<endl;
+		loopSet[loopNum++] = loop;
+		loopIndex++;
+	}
+	loopGenerated = true;
+}
+
 void CFG::printLoop(){
 	set<edge>::iterator edgeIte = rEdge.begin();
 
@@ -530,6 +566,7 @@ void CFG::printLoop(){
 		
 
 		edgeIte++;
+		//the rEdge is sorted by the end of edge that is why this while loop will work
 		while(edgeIte->end == startBlockNum && edgeIte != rEdge.end()){
 
 	//		cout<<"found another backedge with same staring block num"<< "start from "<<edgeIte->end;//debugging msg
@@ -604,12 +641,3 @@ int CFG::getInstrNum(simple_instr *instr){
 }
 
 
-		
-
-
-
-	
-
-
-
-	

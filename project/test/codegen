@@ -1,5 +1,5 @@
 #!/bin/csh
 
-foreach i (`seq 1 1 15`)
-	../../printsimple/printsimple t$i.tmp > t$i"code"
+foreach i (`ls *.tmp`)
+	../src/cpp/printCode $i > $i"code"
 end

@@ -74,6 +74,11 @@ class CFG {
 	void insertOnStack(int,stack<int>&,set<int>&);
 	set<int> findLoop(int,int);
 	
+	//for project
+	int loopNum;
+	map<int,set<int>> loopSet;
+	bool loopGenerated;
+	
 
 
 	public:
@@ -99,6 +104,9 @@ class CFG {
 
 		//for project
 		int getInstrNum(simple_instr *instr);
+		void genLoopSet();
+		map<int,set<int>> getLoopSet() const{ return loopSet;}
+		int getLoopNum() const{return loopNum;}
 
 };
 

@@ -27,6 +27,8 @@ class UDChain{
 	public:
 		UDChain(simple_instr *inlist, CFG *cfg, RD *rd); 
 		~UDChain();
+
+		int getInstrNum(){return instrNum;}
 		
 		void setEdge(int start, int end);
 		void clearEdge(int start, int end);

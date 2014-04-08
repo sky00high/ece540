@@ -1,6 +1,9 @@
 TARGET =	project
 LIBS =		-lsimple -lcheck -lsuif -luseful
-OBJS = UDChain.o  DFA.o Expression.o ae.o	DFG.o	doproc.o main.o cfg.o BitVector.o RD.o Definition.o
+CSRCS = print.c
+HEADERS = print.h
+OBJS = print.o UDChain.o  DFA.o Expression.o ae.o	DFG.o	doproc.o main.o cfg.o BitVector.o RD.o Definition.o
+EXTRA_CFLAGS =	$(INCLDIRFLAG)
 
 all:            $(TARGET)
 install-bin:    install-prog
