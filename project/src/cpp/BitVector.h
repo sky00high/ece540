@@ -9,6 +9,7 @@ class BitVector{
 
 	public:
 		vector<bool> value;
+		bool isSet(int index){return value[index];}
 		friend ostream& operator<<(ostream &os, const BitVector &bitVector);
 		void ini(int size);
 		void set(int index);

@@ -3,6 +3,7 @@ extern "C"{
 	#include <simple.h>
 }
 #include <iostream>
+#include <assert.h>
 #include <map>
 #include "cfg.h"
 #include <stack>
@@ -588,6 +589,18 @@ map<int,int> CFG::getBlockSucc(int blockIndex){
 }
 map<int,int> CFG::getBlockPred(int blockIndex){
 	return cfgMap[blockIndex].preb;
+}
+
+int CFG::getInstrNum(simple_instr *instr){
+	simple_instr *tracer = inlist;
+	int index = 0;
+
+	while(tracer != NULL){
+		if(tracer == instr) return index;
+		tracer = tracer->next;
+		index ++;
+	}
+	assert(false);
 }
 
 

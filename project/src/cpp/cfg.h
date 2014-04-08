@@ -97,6 +97,9 @@ class CFG {
 		//for a4
 		map<int,int> getBlockPred(int BlockIndex);
 
+		//for project
+		int getInstrNum(simple_instr *instr);
+
 };
 
 #endif

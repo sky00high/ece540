@@ -25,7 +25,6 @@ simple_instr *RD::findInstr(int index){
 	return this->cfg->findInstr(index);
 }
 bool RD::isPseudoReg(simple_reg *reg){
-
 	return reg->kind ==  PSEUDO_REG;
 }
 
@@ -230,8 +229,8 @@ void RD::printKillSet(){
 void RD::genRDOutSet(){
 	DFA newDFA(DFA::DIRECTION_FORWARD, DFA::PATH_ANYWAY, 
 					genSet,killSet,cfg,defNum);
-
 	this->RDOutSet = newDFA.getOutSet();
+	this->RDInSet = newDFA.getInSet();
 }
 
 void RD::printRDOutSet(){

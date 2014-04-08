@@ -15,24 +15,16 @@ class RD {
    map <Definition, int> defMap;
 	simple_instr *inlist;
 	
-	map<int,BitVector> genSet;
+	map<int, BitVector> genSet;
 	map<int, BitVector> killSet;
 	map<int, BitVector> RDOutSet;
+	map<int, BitVector> RDInSet;
 	
 	simple_instr *findInstr(int);
 	bool isPseudoReg(simple_reg*);
 	int defNum;
-	bool isDef(simple_instr *instr);
 	Definition findDefIndex(int index);
-	/*
-	void iniEvalSet();
-	bool isExpr(simple_instr*);
-	void genEvalBlock(int);
-	bool exprIsKilled(simple_instr *instr, Expression expr);
-	//part3 helpers
-	void iniKillSet();
-	void genKillBlock(int);
-*/
+
    //genGen Helpers
 	void iniGenSet();
 	void genGenBlock(int);
@@ -40,28 +32,34 @@ class RD {
 	//killGen Helpers
 
 	void iniKillSet();
-	bool instrInBB(simple_instr *instr,int blockIndex);
 	int getIndexInstr(simple_instr *instr);
 	bool defIsRedefined(simple_instr *instr, int var);
 	bool instrSameDest(simple_instr *lhs, simple_instr *rhs);
 	void genKillBlock(int BlockIndex);
 
 	public:
+		map<Definition, int> getDefMap(){ return defMap;}
 		RD(CFG *cfg, simple_instr *inlist);
 
 		//part1
+		bool isDef(simple_instr *instr);
 		void genDefList();
 		void printDefList();
 		int getDefNum(){return defNum;}
-	//Genset public
+		//Genset public
 		void genGenSet();
 		void printGenSet();
 		//Killset public
+		bool instrInBB(simple_instr *instr,int blockIndex);
 		void genKillSet();
 		void printKillSet();
 		//RDout
 		void genRDOutSet();
 		void printRDOutSet();
+
+		//other
+
+		map<int, BitVector> getRDInSet(){return RDInSet;}
 		
 	/*
 		//part2

@@ -33,6 +33,7 @@ class DFA{
 	static const int PATH_ALLWAY = 0;
 	static const int PATH_ANYWAY = 1;
 	map<int,BitVector> getOutSet(){return outSet;}
+	map<int,BitVector> getInSet(){return inSet;}
 	DFA(int direction, int path, map<int,BitVector> genSet,
 		 map<int,BitVector> killSet, CFG *cfg, int vectorWidth);
 
