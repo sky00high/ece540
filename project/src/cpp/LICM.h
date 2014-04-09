@@ -22,13 +22,17 @@ class LICM{
 	bool opIsLI(simple_instr *instr, set<int>LI);
 	bool checkRegIsLI(simple_reg *reg, set<int> defSet,set<int> loop,
 							 set<int> LI); 
-	bool checkRegIsLi(simple_reg *reg);
 	simple_instr *findTempDefInstr(int varNum);
-	void moveCodeToPreheader(int preHeaderIndex, set<int> LI);
+	void moveCodeToPreheader(int preHeaderIndex, set<int> LI,int loopIndex);
 	void debugDump(int loopIndex, set<int> LI);
+	simple_reg *findTargetReg(simple_instr *instr);
+	bool cmpReg(simple_reg *reg1, simple_reg *reg2);
+	bool isUse(simple_instr *instr, simple_reg *reg);
+	void moveInstr(int preHeader, set<void*> confirmedToMove);
 
 	public:
 		LICM(simple_instr *inlist);
+		~LICM();
 		void start();
 
 

@@ -210,7 +210,7 @@ void LICM::start(){
 			}
 		}
 		set<int>::iterator ite = loop.begin();
-		moveCodeToPreheader(*ite - 1, LI);
+		moveCodeToPreheader(*ite - 1, LI,i);
 		debugDump(i,LI);
 		delete cfg;
 		delete rd;
@@ -221,8 +221,18 @@ void LICM::start(){
 	}
 }
 
-void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI){
+simple_reg *LICM::findTargetReg(simple_instr *instr){
+	if(isDef(instr)){
+		if(instr->opcode == LDC_OP) return instr->u.ldc.dst;
+		else return instr->u.base.dst;
+	}
+	return NULL;
+}
+void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 	set<void*> confirmedToMove;
+	set<int> loop = (cfg->getLoopSet())[loopIndex];
+	set<int> exitNode = (cfg->getLoopSet())[loopIndex];
+
 	for(set<int>::iterator ite = LI.begin(); ite != LI.end(); ite++){
 		/* its gona be move iff
 		 1. BB s dominates all exits of L &&
@@ -230,14 +240,87 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI){
 		3. all uses of v in L can only be reached by the
 		definition of v in s )
 		*/
+		bool ifMove = true;
+		simple_instr *LIInstr = cfg->findInstrIndex(*ite);
+		//1.
+		for(set<int>::iterator exitNodeIte = exitNode.begin(); 
+												exitNodeIte != exitNode.end(); exitNodeIte++){
+			if(!cfg->ifDom(*ite,*exitNodeIte)) ifMove = false;
+		}
+		//2.and3
+		simple_reg *targetReg = findTargetReg(LIInstr);
+		assert(targetReg != NULL);
+		if(targetReg->kind == PSEUDO_REG){
+			//loop through all BB in loop
+			for(set<int>::iterator loopIte = loop.begin(); 
+													loopIte !=loop.end(); loopIte++){
+				//loop through all instr in this BB
+				simple_instr *start, *end;
+				start = this->cfg->getBlockStartInstr(*loopIte);
+				end = this->cfg->getBlockEndInstr(*loopIte);
+				simple_instr *tracer = start;
+				if(start != NULL) while(true){
+					//2. v is not defined elsewhere in L &&
+					if(tracer != LIInstr && isDef(tracer)){
+						simple_reg *targetReg2 = findTargetReg(tracer);
+						if(targetReg2->kind == PSEUDO_REG){
+							if(targetReg2->num == targetReg->num){
+								ifMove = false;
+							}
+						}
+					}
+					//3.
+					//check if this Instrction is a Use of this particular variable
+					//if so, use UDChain to find all the defs for this use. 
+					//Go through all the defs, if the def is defining this variable and
+					//it is not our LIInstr, ifMove become false;
+					if(isUse(tracer, targetReg)){
+						set<int> defSet = udChain->findDefUse(cfg->findIndexInstr(tracer));
+						for(set<int>::iterator defIte =defSet.begin();defIte!=defSet.end();defIte++){
+							simple_instr *defInstr = cfg->findInstrIndex(*defIte);
+							if(defInstr->u.base.dst->num == targetReg->num
+									&& defInstr != LIInstr){
+								ifMove = false;
+							}
+						}
+					}
+					if(tracer == end) break;
+					else tracer = tracer->next;
+				}
+			}
+		}
+		if(ifMove) confirmedToMove.insert((void*)LIInstr);
 	}
-
-		
-
 	
+	moveInstr(preHeaderIndex, confirmedToMove);
+
+
 	return;
 }
+void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
+	simple_instr *insertPoint = cfg->getBlockStartInstr(preHeader), *tracer = inlist;
+
+	while(tracer){
+		if(confirmedToMove.count((void*)tracer) != 0){
+			simple_instr *temp1,*temp2;
+			temp1 = tracer->prev;
+			temp2 = tracer->next;
+			temp1->next = temp2;
+			temp2->prev = temp1;
+
+			tracer->next = insertPoint->next;
+			tracer->prev = insertPoint;
+			insertPoint->next = tracer;
+
+			insertPoint = insertPoint->next;
+			tracer = temp2;
+		}else{
+			tracer = tracer->next;
+		}
+	}
+}
 			
+	
 void LICM::debugDump(int loopIndex, set<int> LI){
 	cout<<"loop # "<<loopIndex<<" LI are:"<<endl;
 	for(set<int>::iterator ite = LI.begin(); ite != LI.end(); ite++){
@@ -245,4 +328,92 @@ void LICM::debugDump(int loopIndex, set<int> LI){
 		fprint_instr(stdout,cfg->findInstrIndex(*ite));
 	}
 	cout<<endl;
+}
+
+bool LICM::cmpReg(simple_reg *reg1, simple_reg *reg2){
+	if(reg1->kind == reg2->kind 
+			&& reg1->num == reg2->num){
+		return true;
+	}
+
+	return false;
+}
+bool LICM::isUse(simple_instr *tracer, simple_reg *reg){
+	bool result = true;
+	switch (tracer->opcode) {
+		case LOAD_OP: {
+			 result &= cmpReg(reg,tracer->u.base.src1);
+			 break;
+		}
+		case STR_OP: {
+			 result &= cmpReg(reg,tracer->u.base.src1);
+			 result &= cmpReg(reg,tracer->u.base.src2);
+			 break;
+		}
+		case MCPY_OP: {
+			 result &= cmpReg(reg,tracer->u.base.src1);
+			 result &= cmpReg(reg,tracer->u.base.src2);
+			 break;
+		}
+		case LDC_OP: {
+			//check
+			 break;
+		}
+		case JMP_OP:{
+			break;
+		}
+		case BTRUE_OP:
+		case BFALSE_OP: {
+			 result &= cmpReg(reg,tracer->u.bj.src);
+			 break;
+		}
+		case CALL_OP: {
+			 unsigned n, nargs;
+			 result &= cmpReg(reg,tracer->u.call.proc);
+			 nargs = tracer->u.call.nargs;
+			 if (nargs != 0) {
+			for (n = 0; n < nargs - 1; n++) {
+				 result &= cmpReg(reg,tracer->u.call.args[n]);
+			}
+			result &= cmpReg(reg,tracer->u.call.args[nargs - 1]);
+			 }
+			 break;
+		}
+		case MBR_OP: {
+			 result &= cmpReg(reg,tracer->u.mbr.src);
+			 break;
+		}
+		case LABEL_OP:{
+			break;
+		}
+		case RET_OP: {
+			 if (tracer->u.base.src1 != NO_REGISTER) {
+				result &= cmpReg(reg,tracer->u.base.src1);
+			 }
+			 break;
+		}
+
+		case CVT_OP:
+		case CPY_OP:
+		case NEG_OP:
+		case NOT_OP: {
+			 /* unary base instructions */
+			 result &= cmpReg(reg,tracer->u.base.src1);
+			 break;
+		}
+
+		default: {
+			 /* binary base instructions */
+			 result &= cmpReg(reg,tracer->u.base.src1);
+			 result &= cmpReg(reg,tracer->u.base.src2);
+		}
+		return result;
+	}
+}
+
+
+LICM::~LICM(){
+	if(cfg!= NULL) delete cfg;
+	if(udChain != NULL) delete udChain;
+	if(rd !=  NULL) delete rd;
 }

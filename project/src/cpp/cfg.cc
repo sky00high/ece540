@@ -518,12 +518,26 @@ set<int> CFG::findLoop(int start, int end){
 	return loop;
 }
 
-
+set<int> CFG::findExitNode(set<int> loop){
+	set<int> exitNode;
+	//for each of the BB in the loop
+	for(set<int>::iterator ite=loop.begin(); ite!=loop.end();ite++){
+		map<int,int> succ = getBlockSucc(*ite);
+		//for each of the succ of the BB
+		for(map<int,int>::const_iterator ite2=succ.begin();ite2!=succ.end();ite2++){
+			//if the succ is not in the loop, the BB is an exit node, add it!
+			if(loop.count(ite2->second) == 0){
+				exitNode.insert(*ite);
+			}
+		}
+	}
+	return exitNode;
+}
+	 
 void CFG::genLoopSet(){
 	if(loopGenerated ) return;
 	set<edge>::iterator edgeIte = rEdge.begin();
 
-	int loopIndex = 0;
 
 	while(edgeIte != rEdge.end()){
 		set<int> loop = findLoop(edgeIte->end,edgeIte->start);
@@ -541,18 +555,12 @@ void CFG::genLoopSet(){
 			}
 			edgeIte++;
 		}
+		exitNodeSet[loopNum] = findExitNode(loop);
 		loopSet[loopNum++] = loop;
-		loopIndex++;
 	}
 	loopGenerated = true;
 }
 
-map<int,set<int> > CFG::getLoopSet(){
-	if(!loopGenerated){
-		genLoopSet();
-	}
-	return loopSet;
-}
 
 void CFG::printLoop(){
 	set<edge>::iterator edgeIte = rEdge.begin();
@@ -653,7 +661,30 @@ int CFG::findBBInstr(simple_instr *instr){
 	return findBasicBlockInstr(this->findIndexInstr(instr));
 }
 
+map<int,set<int> > CFG::getLoopSet(){
+	if(!loopGenerated){
+		genLoopSet();
+	}
+	return loopSet;
+}
 
+set<int> CFG::getLoop(int loopIndex){
+	if(!loopGenerated){
+		genLoopSet();
+	}
+	return loopSet[loopIndex];
+}
 
+set<int> CFG::getExitNode(int loopIndex){
+	if(!loopGenerated){
+		genLoopSet();
+	}
+	return exitNodeSet[loopIndex];
+}
 
+bool CFG::ifDom(int BB1, int BB2){
+	return cfgMap[BB1].dom.count(BB2) != 0;
+}
+
+	
 

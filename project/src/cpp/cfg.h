@@ -77,9 +77,11 @@ class CFG {
 	//for project
 	int loopNum;
 	map<int,set<int> > loopSet;
+	map<int,set<int> > exitNodeSet;
 	bool loopGenerated;
 	
 
+	set<int> findExitNode(set<int> loop);
 
 	public:
 		simple_instr *findInstr(int);
@@ -110,15 +112,12 @@ class CFG {
 		int findIndexInstr(simple_instr *instr);
 		simple_instr *findInstrIndex(int index);
 		int findBBInstr(simple_instr *instr);
+		set<int> getLoop(int loopIndex);
+		set<int> getExitNode(int loopIndex);
+
+		bool ifDom(int BB1, int BB2);
 		
 
 };
 
 #endif
-
-
-
-
-	
-
-
