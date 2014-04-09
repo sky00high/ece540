@@ -22,7 +22,16 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 CFG *thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();
 	 thisCFG->genLoopHeader();
+	 //thisCFG->fullPrint();
 	 delete thisCFG;
+	 /*
+	 thisCFG = new CFG(inlist);
+	 thisCFG->findIDom();
+	 thisCFG->findREdge();
+	 thisCFG->genLoopSet();
+	 thisCFG->fullPrint();
+	 delete thisCFG;
+	 */
 	 LICM newLICM(inlist);
 	 newLICM.start();
 	/* 

@@ -185,6 +185,9 @@ void LICM::start(){
 		rd->genKillSet();
 		rd->genRDOutSet();
 		udChain = new UDChain(inlist, cfg, rd);
+		cout<<endl;
+		cfg->fullPrint();
+		cout<<endl;
 		set<int> LI;
 		while(changed){
 			changed = false;
@@ -209,9 +212,8 @@ void LICM::start(){
 				}
 			}
 		}
-		set<int>::iterator ite = loop.begin();
-		moveCodeToPreheader(*ite - 1, LI,i);
 		debugDump(i,LI);
+		moveCodeToPreheader(cfg->getLoopStart(i)-1, LI,i);
 		delete cfg;
 		delete rd;
 		delete udChain;
@@ -231,7 +233,7 @@ simple_reg *LICM::findTargetReg(simple_instr *instr){
 void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 	set<void*> confirmedToMove;
 	set<int> loop = (cfg->getLoopSet())[loopIndex];
-	set<int> exitNode = (cfg->getLoopSet())[loopIndex];
+	set<int> exitNode = cfg->getExitNode(loopIndex);
 
 	for(set<int>::iterator ite = LI.begin(); ite != LI.end(); ite++){
 		/* its gona be move iff
@@ -245,7 +247,10 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 		//1.
 		for(set<int>::iterator exitNodeIte = exitNode.begin(); 
 												exitNodeIte != exitNode.end(); exitNodeIte++){
-			if(!cfg->ifDom(*ite,*exitNodeIte)) ifMove = false;
+			if(!cfg->ifDom(cfg->findBBIndex(*ite),*exitNodeIte)){
+				cout<<*ite<<"fail #1"<<endl;
+				ifMove = false;
+			}
 		}
 		//2.and3
 		simple_reg *targetReg = findTargetReg(LIInstr);
@@ -266,6 +271,8 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 						if(targetReg2->kind == PSEUDO_REG){
 							if(targetReg2->num == targetReg->num){
 								ifMove = false;
+								cout<<*ite<<"fail #2"<<endl;
+								//debug//
 							}
 						}
 					}
@@ -281,6 +288,7 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 							if(defInstr->u.base.dst->num == targetReg->num
 									&& defInstr != LIInstr){
 								ifMove = false;
+								cout<<*ite<<"fail #3"<<endl;
 							}
 						}
 					}
@@ -292,7 +300,16 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 		if(ifMove) confirmedToMove.insert((void*)LIInstr);
 	}
 	
+	//debug msg
+	cout<<"for loop "<<loopIndex<<" instr will be moved is "<<endl;
+	for(set<void*>::iterator ite=confirmedToMove.begin();
+				ite != confirmedToMove.end();ite++){
+		cout<<cfg->findIndexInstr((simple_instr*)*ite)<<":";
+		fprint_instr(stdout, (simple_instr*)*ite);
+	}
+	//debug done
 	moveInstr(preHeaderIndex, confirmedToMove);
+	cfg->printInstr();
 
 
 	return;
@@ -302,6 +319,11 @@ void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
 
 	while(tracer){
 		if(confirmedToMove.count((void*)tracer) != 0){
+			//debug
+			cout<<"start moving instr \t";
+			fprint_instr(stdout,tracer);
+			cout.flush();
+			//debugdone
 			simple_instr *temp1,*temp2;
 			temp1 = tracer->prev;
 			temp2 = tracer->next;
@@ -314,6 +336,9 @@ void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
 
 			insertPoint = insertPoint->next;
 			tracer = temp2;
+			cout<<" done"<<endl;//debug
+			cout.flush();
+
 		}else{
 			tracer = tracer->next;
 		}

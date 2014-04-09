@@ -1,6 +1,7 @@
 #include <stdio.h>
 extern "C"{
 	#include <simple.h>
+	#include "print.h"
 }
 #include <iostream>
 #include <assert.h>
@@ -380,6 +381,19 @@ void CFG::printIDom(){
 	cout<<"block "<<totalBlockNum - 1<<endl;
 	cout<<"\tidom "<<totalBlockNum - 2<<endl;
 }
+void CFG::printDom(){
+	cout<<"block 0\n\tdom"<<endl;
+	for(int i = 1; i < totalBlockNum - 1; i++){
+		cout<<"block "<<i<<endl;
+		cout<<"\tdom";
+	   for(set<int>::iterator ii = cfgMap[i].dom.begin(); ii != cfgMap[i].dom.end(); ii++){
+		  cout<<" "<<*ii;
+	   }
+		cout<<"\n";
+	}
+	cout<<"block "<<totalBlockNum - 1<<endl;
+	cout<<"\tdom "<<totalBlockNum - 2<<endl;
+}
 
 
 void CFG::printBlock(){
@@ -526,7 +540,7 @@ set<int> CFG::findExitNode(set<int> loop){
 		//for each of the succ of the BB
 		for(map<int,int>::const_iterator ite2=succ.begin();ite2!=succ.end();ite2++){
 			//if the succ is not in the loop, the BB is an exit node, add it!
-			if(loop.count(ite2->second) == 0){
+			if(loop.count(ite2->first) == 0){
 				exitNode.insert(*ite);
 			}
 		}
@@ -556,6 +570,7 @@ void CFG::genLoopSet(){
 			edgeIte++;
 		}
 		exitNodeSet[loopNum] = findExitNode(loop);
+		loopStart[loopNum] = startBlockNum;
 		loopSet[loopNum++] = loop;
 	}
 	loopGenerated = true;
@@ -660,6 +675,9 @@ simple_instr *CFG::findInstrIndex(int index){
 int CFG::findBBInstr(simple_instr *instr){
 	return findBasicBlockInstr(this->findIndexInstr(instr));
 }
+int CFG::findBBIndex(int index){
+	return findBasicBlockInstr(index);
+}
 
 map<int,set<int> > CFG::getLoopSet(){
 	if(!loopGenerated){
@@ -682,9 +700,79 @@ set<int> CFG::getExitNode(int loopIndex){
 	return exitNodeSet[loopIndex];
 }
 
-bool CFG::ifDom(int BB1, int BB2){
-	return cfgMap[BB1].dom.count(BB2) != 0;
+int CFG::getLoopStart(int loopIndex){
+	if(!loopGenerated){
+		genLoopSet();
+	}
+	return loopStart[loopIndex];
 }
+
+bool CFG::ifDom(int BB1, int BB2){
+	return cfgMap[BB2].dom.count(BB1) != 0;
+}
+
+void CFG::fullPrint(){
+	assert(loopGenerated);
+	for(int i = 0; i < totalBlockNum; i++){
+		cout<<"Block "<<i<<"\t";
+		BasicBlock BB = cfgMap[i];
+		for(int k = 0; k < loopNum; k++){
+			set<int> loop = loopSet[k];
+			set<int> exitNode = exitNodeSet[k];
+			int loopStarter = loopStart[k];
+			if(i == loopStarter){
+				cout<<k<<"(start) ";
+			}
+			if(loop.count(i) != 0){
+				cout<<k<<" ";
+			}
+			if(exitNode.count(i) != 0){
+				cout<<k<<"(exit) ";
+			}
+		}
+		cout<<endl;
+		cout<<"\tsuccessors ";
+		if(BB.succ.size() != 0){
+			for(map<int,int>::const_iterator ii = BB.succ.begin(); ii != BB.succ.end(); ++ii){
+				cout<<" "<<(*ii).first;
+			}
+		}
+		cout <<endl;
+
+		cout<<"\tpredecessors ";
+		if(BB.preb.size() != 0){
+			for(map<int,int>::const_iterator ii = BB.preb.begin(); ii != BB.preb.end(); ++ii){
+				cout<<" "<<(*ii).first;
+			}
+		}
+		cout <<endl;
+		if(BB.instrNum == 0) continue;
+		for(int j = BB.startNum; j <= BB.endNum; j++){
+			cout<<"  "<<j<<" : ";
+			fprint_instr(stdout,findInstrIndex(j));
+		}
+	}
+	printDom();
+	printIDom();
+	
+}
+
+void CFG::printInstr(){
+	int index = 0;
+	simple_instr *tracer = inlist;
+
+	while(tracer){
+		cout<<index<<" :";
+		fprint_instr(stdout,tracer);
+		tracer = tracer->next;
+		index ++;
+	}
+	
+}
+
+
+	
+
 
 	
 

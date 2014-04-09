@@ -78,6 +78,7 @@ class CFG {
 	int loopNum;
 	map<int,set<int> > loopSet;
 	map<int,set<int> > exitNodeSet;
+	map<int,int> loopStart;
 	bool loopGenerated;
 	
 
@@ -91,6 +92,7 @@ class CFG {
 		CFG(simple_instr *inlist);
 		void findIDom();
 		void printIDom();
+		void printDom();
 
 		void genLoopHeader();
 		void printLoop();
@@ -112,10 +114,15 @@ class CFG {
 		int findIndexInstr(simple_instr *instr);
 		simple_instr *findInstrIndex(int index);
 		int findBBInstr(simple_instr *instr);
+		int findBBIndex(int index);
 		set<int> getLoop(int loopIndex);
 		set<int> getExitNode(int loopIndex);
+		int getLoopStart(int loopIndex);
 
 		bool ifDom(int BB1, int BB2);
+		void fullPrint();
+		void printInstr();
+
 		
 
 };
