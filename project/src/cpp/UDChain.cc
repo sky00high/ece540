@@ -187,3 +187,13 @@ UDChain::~UDChain(){
 	}
 	delete [] UDGraph;
 }
+
+set<int> UDChain::findDefUse(int useIndex){
+	set<int> defSet;
+	for(int i = 0; i < instrNum;i++){
+		if(UDGraph[i][useIndex]){
+			defSet.insert(i);
+		}
+	}
+	return defSet;
+}

@@ -520,7 +520,7 @@ set<int> CFG::findLoop(int start, int end){
 
 
 void CFG::genLoopSet(){
-	if(loopGenerated == true) return;
+	if(loopGenerated ) return;
 	set<edge>::iterator edgeIte = rEdge.begin();
 
 	int loopIndex = 0;
@@ -530,8 +530,6 @@ void CFG::genLoopSet(){
 		int startBlockNum = edgeIte->end;
 		set<int> backedge;
 		backedge.insert(edgeIte->start);
-		
-
 		edgeIte++;
 		//the rEdge is sorted by the end of edge that is why this while loop will work
 		while(edgeIte->end == startBlockNum && edgeIte != rEdge.end()){
@@ -543,14 +541,17 @@ void CFG::genLoopSet(){
 			}
 			edgeIte++;
 		}
-		for(set<int>::iterator loopIte = loop.begin(); loopIte != loop.end(); loopIte ++){
-			cout<<" "<<*loopIte;
-		}
-		cout<<endl;
 		loopSet[loopNum++] = loop;
 		loopIndex++;
 	}
 	loopGenerated = true;
+}
+
+map<int,set<int> > CFG::getLoopSet(){
+	if(!loopGenerated){
+		genLoopSet();
+	}
+	return loopSet;
 }
 
 void CFG::printLoop(){
@@ -641,7 +642,18 @@ int CFG::getInstrNum(simple_instr *instr){
 }
 
 int CFG::findIndexInstr(simple_instr *instr){
-	return getInstrNum(simple_instr *instr);
+	return getInstrNum(instr);
 }
+
+simple_instr *CFG::findInstrIndex(int index){
+	return findInstr(index);
+}
+
+int CFG::findBBInstr(simple_instr *instr){
+	return findBasicBlockInstr(this->findIndexInstr(instr));
+}
+
+
+
 
 

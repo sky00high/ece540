@@ -76,7 +76,7 @@ class CFG {
 	
 	//for project
 	int loopNum;
-	map<int,set<int>> loopSet;
+	map<int,set<int> > loopSet;
 	bool loopGenerated;
 	
 
@@ -105,9 +105,12 @@ class CFG {
 		//for project
 		int getInstrNum(simple_instr *instr);
 		void genLoopSet();
-		map<int,set<int>> getLoopSet() const{ return loopSet;}
+		map<int,set<int> > getLoopSet() ;
 		int getLoopNum() const{return loopNum;}
 		int findIndexInstr(simple_instr *instr);
+		simple_instr *findInstrIndex(int index);
+		int findBBInstr(simple_instr *instr);
+		
 
 };
 

@@ -9,6 +9,7 @@ extern "C" {
 #include "DFG.h"
 #include "RD.h"
 #include "UDChain.h"
+#include "LICM.h"
 using namespace std;
 // data structures you should consider using are vector and hash_map from the STL
 // refer to the following link as a starting point if you are not familiar with them: 
@@ -22,7 +23,9 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisCFG->findIDom();
 	 thisCFG->genLoopHeader();
 	 delete thisCFG;
-	 
+	 LICM newLICM(inlist);
+	 newLICM.start();
+	/* 
 	 thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();
 	 RD *thisRD = new RD(thisCFG,inlist);
@@ -65,6 +68,7 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 			 
 	 delete thisCFG;
 	 delete thisRD;
+	 */
 	 /*
 	 cout<<"Procedure "<<proc_name<<endl;
 	 int index = 0;
