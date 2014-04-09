@@ -137,7 +137,7 @@ bool LICM::checkRegIsLI(simple_reg *reg, set<int> defSet,set<int> loop,
 bool LICM::opIsLI(simple_instr *instr, set<int> LI, set<int> loop){
 	if(!isDef(instr)) return false;
 
-	if(instr->opcode == LDC_OP) return true;
+	if(instr->opcode == LDC_OP) return false;
 	else{
 		set<int> defSet = udChain->findDefUse(cfg->findIndexInstr(instr));
 		int numOfOp = findNumOfOps(instr);
@@ -212,6 +212,11 @@ void LICM::start(){
 				}
 			}
 		}
+		for(set<int>::iterator ite = LI.begin(); ite != LI.end();ite++){
+			findConstant(cfg->findInstrIndex(*ite),LI);
+		}
+			
+
 		debugDump(i,LI);
 		moveCodeToPreheader(cfg->getLoopStart(i)-1, LI,i);
 		delete cfg;
@@ -223,6 +228,30 @@ void LICM::start(){
 	}
 }
 
+void LICM::findConstant(simple_instr *instr, set<int> &LI){
+	if(!isDef(instr)) return ;
+
+	if(instr->opcode == LDC_OP) return;
+	else{
+		int numOfOp = findNumOfOps(instr);
+		assert(numOfOp != -1);
+		bool return_value = true;
+		if(numOfOp == 1){
+			checkRegIsConst(instr->u.base.src1, LI);
+		} else  {
+			assert(numOfOp == 2);
+			checkRegIsConst(instr->u.base.src1, LI);
+			checkRegIsConst(instr->u.base.src2, LI);
+		}
+	}
+}
+void LICM::checkRegIsConst(simple_reg *reg, set<int> &LI){
+	if(reg->kind == TEMP_REG){
+		simple_instr *ldcInstr = findTempDefInstr(reg->num);
+		assert(ldcInstr->opcode == LDC_OP);
+		LI.insert(cfg->findIndexInstr(ldcInstr));
+	}
+}
 simple_reg *LICM::findTargetReg(simple_instr *instr){
 	if(isDef(instr)){
 		if(instr->opcode == LDC_OP) return instr->u.ldc.dst;
@@ -324,6 +353,15 @@ void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
 			fprint_instr(stdout,tracer);
 			cout.flush();
 			//debugdone
+
+			if(tracer->opcode != LDC_OP 
+						&& tracer->u.base.dst->kind == TEMP_REG){
+				simple_reg *oldReg = tracer->u.base.dst;
+				simple_reg *newReg = new_register(tracer->type,PSEUDO_REG);
+				tracer->u.base.dst = newReg;
+				replaceReg(oldReg,newReg);
+			}
+				
 			simple_instr *temp1,*temp2;
 			temp1 = tracer->prev;
 			temp2 = tracer->next;
@@ -442,3 +480,105 @@ LICM::~LICM(){
 	if(udChain != NULL) delete udChain;
 	if(rd !=  NULL) delete rd;
 }
+
+
+void LICM::replaceReg(simple_reg *oldReg, simple_reg *newReg){
+	assert(oldReg->kind == TEMP_REG);
+
+	simple_instr *tracer = inlist;
+	while(tracer){
+		ifUseReplace(tracer, oldReg, newReg);
+		tracer = tracer->next;
+	}
+}
+			
+
+
+void LICM::ifUseReplace(simple_instr *tracer, simple_reg *reg, 
+									simple_reg *newReg){
+	bool result = true;
+	switch (tracer->opcode) {
+		case LOAD_OP: {
+			 result = cmpReg(reg,tracer->u.base.src1);
+			 if(result)tracer->u.base.src1 = newReg;
+
+			 break;
+		}
+		case STR_OP: {
+			 result = cmpReg(reg,tracer->u.base.src1);
+			 if(result)tracer->u.base.src1 = newReg;
+			 result = cmpReg(reg,tracer->u.base.src2);
+			 if(result)tracer->u.base.src2 = newReg;
+			 break;
+		}
+		case MCPY_OP: {
+			 result = cmpReg(reg,tracer->u.base.src1);
+			 if(result)tracer->u.base.src1 = newReg;
+			 result = cmpReg(reg,tracer->u.base.src2);
+			 if(result)tracer->u.base.src2 = newReg;
+			 break;
+		}
+		case LDC_OP: {
+			//check
+			 break;
+		}
+		case JMP_OP:{
+			break;
+		}
+		case BTRUE_OP:
+		case BFALSE_OP: {
+			 result = cmpReg(reg,tracer->u.bj.src);
+			 if(result)tracer->u.bj.src = newReg;
+			 break;
+		}
+		case CALL_OP: {
+			 unsigned n, nargs;
+			 result = cmpReg(reg,tracer->u.call.proc);
+			 nargs = tracer->u.call.nargs;
+			 if (nargs != 0) {
+			for (n = 0; n < nargs - 1; n++) {
+				 result = cmpReg(reg,tracer->u.call.args[n]);
+				 if(result)tracer->u.call.args[n] = newReg;
+			}
+			result = cmpReg(reg,tracer->u.call.args[nargs - 1]);
+			 if(result)tracer->u.call.args[nargs - 1] = newReg;
+			 }
+			 break;
+		}
+		case MBR_OP: {
+			 result = cmpReg(reg,tracer->u.mbr.src);
+			 if(result)tracer->u.mbr.src= newReg;
+			 break;
+		}
+		case LABEL_OP:{
+			break;
+		}
+		case RET_OP: {
+			 if (tracer->u.base.src1 != NO_REGISTER) {
+				result = cmpReg(reg,tracer->u.base.src1);
+				 if(result)tracer->u.base.src1= newReg;
+			 }
+			 break;
+		}
+
+		case CVT_OP:
+		case CPY_OP:
+		case NEG_OP:
+		case NOT_OP: {
+			 /* unary base instructions */
+			 result = cmpReg(reg,tracer->u.base.src1);
+			 if(result)tracer->u.base.src1= newReg;
+			 break;
+		}
+
+		default: {
+			 /* binary base instructions */
+			 result = cmpReg(reg,tracer->u.base.src1);
+				 if(result)tracer->u.base.src1= newReg;
+			 result = cmpReg(reg,tracer->u.base.src2);
+				 if(result)tracer->u.base.src2= newReg;
+		}
+	}
+}
+
+

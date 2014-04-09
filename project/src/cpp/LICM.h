@@ -19,7 +19,6 @@ class LICM{
 	bool isDef(simple_instr *instr);
 	int findNumOfOps(simple_instr *instr);
 	bool opIsLI(simple_instr *instr, set<int> LI, set<int> loop);
-	bool opIsLI(simple_instr *instr, set<int>LI);
 	bool checkRegIsLI(simple_reg *reg, set<int> defSet,set<int> loop,
 							 set<int> LI); 
 	simple_instr *findTempDefInstr(int varNum);
@@ -29,6 +28,11 @@ class LICM{
 	bool cmpReg(simple_reg *reg1, simple_reg *reg2);
 	bool isUse(simple_instr *instr, simple_reg *reg);
 	void moveInstr(int preHeader, set<void*> confirmedToMove);
+	void checkRegIsConst(simple_reg *reg, set<int> &LI);
+	void findConstant(simple_instr *instr, set<int> &LI);
+	void replaceReg(simple_reg *old, simple_reg *newReg);
+	void ifUseReplace(simple_instr *tracer, simple_reg *reg, 
+									simple_reg *newReg);
 
 	public:
 		LICM(simple_instr *inlist);
