@@ -14,6 +14,9 @@ extern "C"{
 
 LICM::LICM(simple_instr *inlist){
 	this->inlist = inlist;
+	cfg = NULL;
+	udChain = NULL;
+	rd = NULL;
 }
 
 bool LICM::isDef(simple_instr *instr){

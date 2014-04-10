@@ -1,7 +1,0 @@
-#!/bin/csh
-rm -i -f *my
-foreach i (`ls *.tmp`)
-	echo "generating case  $i"
-	../src/cpp/project $i > $i"my"
-
-end

@@ -33,8 +33,6 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 		rd->genGenSet();
 		rd->genKillSet();
 		rd->genRDOutSet();
-		rd->printDefList();
-		rd->printRDInSet();
 		UDChain *udChain = new UDChain(inlist, cfg, rd);
 		udChain->printUDChain();
 		delete cfg;

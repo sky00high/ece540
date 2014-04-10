@@ -51,7 +51,6 @@ void UDChain::checkReg(simple_instr *instr,int blockIndex,simple_reg *lereg){
 		}
 		if(!isRedefined){
 			BitVector rdIn = (rd->getRDInSet())[blockIndex];
-			cout<<rdIn<<endl;
 			map<Definition,int>defMap = rd->getDefMap();
 			for(map<Definition,int>::const_iterator ite = defMap.begin();ite != defMap.end(); ite++){
 				//set the edge if this def's instr not in this BB

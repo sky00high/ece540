@@ -28,3 +28,8 @@
 *.swp
 *.swo
 
+*.spx
+*.ss
+*.spx.c
+*simdump
+
