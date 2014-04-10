@@ -17,6 +17,7 @@ class LICM{
 	RD *rd;
 
 	bool isDef(simple_instr *instr);
+	bool isDefHaveLoad(simple_instr *instr);
 	int findNumOfOps(simple_instr *instr);
 	bool opIsLI(simple_instr *instr, set<int> LI, set<int> loop);
 	bool checkRegIsLI(simple_reg *reg, set<int> defSet,set<int> loop,
@@ -33,17 +34,13 @@ class LICM{
 	void replaceReg(simple_reg *old, simple_reg *newReg);
 	void ifUseReplace(simple_instr *tracer, simple_reg *reg, 
 									simple_reg *newReg);
+	bool checkNeedModify(simple_instr *instr);
+	void aggressiveCheck(int preHeaderIndex, set<int> LI, int loopIndex);
 
 	public:
 		LICM(simple_instr *inlist);
 		~LICM();
 		void start();
-
-
-
-
-
-
 
 };
 

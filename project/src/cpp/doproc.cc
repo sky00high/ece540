@@ -34,7 +34,7 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 		rd->genKillSet();
 		rd->genRDOutSet();
 		UDChain *udChain = new UDChain(inlist, cfg, rd);
-		udChain->printUDChain();
+	//	udChain->printUDChain();
 		delete cfg;
 		delete rd;
 		delete udChain;
@@ -47,8 +47,8 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisCFG->findIDom();
 	 thisCFG->findREdge();
 	 thisCFG->genLoopSet();
-	 thisCFG->printInstr();
-	 //thisCFG->fullPrint();
+	 //thisCFG->printInstr();
+	 thisCFG->fullPrint();
 	 delete thisCFG;
 	 cout<<"============================================================="<<endl;;
 	 
@@ -62,10 +62,41 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisCFG->findIDom();
 	 thisCFG->findREdge();
 	 thisCFG->genLoopSet();
-	 thisCFG->printInstr();
-	 //thisCFG->fullPrint();
+//	 thisCFG->printInstr();
+	 thisCFG->fullPrint();
 	 delete thisCFG;
 	 cout<<"============================================================="<<endl;;
+	 cout<<"==============================================================="<<endl;
+	 cout<<"pass2"<<endl;
+	 cout<<"==============================================================="<<endl;
+	 LICM newLICM2(inlist);
+	 newLICM2.start();
+	 cout<<"============================================================="<<endl;;
+	 cout<<"after"<<endl;
+	 cout<<"============================================================="<<endl;;
+	 
+	 thisCFG = new CFG(inlist);
+	 thisCFG->findIDom();
+	 thisCFG->findREdge();
+	 thisCFG->genLoopSet();
+//	 thisCFG->printInstr();
+	 thisCFG->fullPrint();
+	 delete thisCFG;
+	 cout<<"============================================================="<<endl;;
+	 LICM newLICM3(inlist);
+	 newLICM3.start();
+	 LICM newLICM4(inlist);
+	 newLICM4.start();
+	 LICM newLICM5(inlist);
+	 newLICM5.start();
+	 LICM newLICM6(inlist);
+	 newLICM6.start();
+	 LICM newLICM7(inlist);
+	 newLICM7.start();
+	 LICM newLICM8(inlist);
+	 newLICM8.start();
+	 LICM newLICM9(inlist);
+	 newLICM9.start();
 	/* 
 	 thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();

@@ -22,7 +22,7 @@ LICM::LICM(simple_instr *inlist){
 bool LICM::isDef(simple_instr *instr){
 	switch (instr->opcode) {
 		case LOAD_OP: 
-			return true;
+			return false;
 			break;
 		case STR_OP: 
 		case MCPY_OP: 
@@ -49,6 +49,35 @@ bool LICM::isDef(simple_instr *instr){
 	return false;
 }
 
+bool LICM::isDefHaveLoad(simple_instr *instr){
+	switch (instr->opcode) {
+		case LOAD_OP: 
+			return true;
+			break;
+		case STR_OP: 
+		case MCPY_OP: 
+			break;
+		case LDC_OP:{
+			return true;
+			break;
+		}
+		case JMP_OP:
+		case BTRUE_OP:
+		case BFALSE_OP: 
+		case CALL_OP: 
+		case MBR_OP: 
+		case LABEL_OP:
+		case RET_OP: break;
+		case CVT_OP:
+		case CPY_OP:
+		case NEG_OP:
+		case NOT_OP:  
+		default:
+			//its binary or unary ops
+			return true; 
+	}
+	return false;
+}
 int LICM::findNumOfOps(simple_instr *instr){
 	switch (instr->opcode) {
 		case LOAD_OP:{
@@ -84,7 +113,7 @@ int LICM::findNumOfOps(simple_instr *instr){
 simple_instr *LICM::findTempDefInstr(int varNum){
 	simple_instr *tracer = inlist;
 	while(tracer){
-		if(isDef(tracer)){
+		if(isDefHaveLoad(tracer)){
 			if(tracer->opcode == LDC_OP
 					&& tracer->u.ldc.dst->kind == TEMP_REG
 					&& tracer->u.ldc.dst->num == varNum){
@@ -147,10 +176,9 @@ bool LICM::opIsLI(simple_instr *instr, set<int> LI, set<int> loop){
 		assert(numOfOp != -1);
 		//for binary and unary instruction, check each of its registors
 		//return true if:
-		//	   all of its PESUDO_REG's definition is in LI or outside of 
+		//	   all of its PESUDO_REG's definition is  outside of 
 		//		this loop. 
-		//    AND all of its TMP_REG's definition is outside of the loop
-		//		or is in LI
+		//    AND all of its TMP_REG's definition is  const
 		bool return_value = true;
 		if(numOfOp == 1){
 			return_value &= checkRegIsLI(instr->u.base.src1,defSet,loop,LI);
@@ -215,6 +243,53 @@ void LICM::start(){
 				}
 			}
 		}
+		aggressiveCheck(cfg->getLoopStart(i)-1, LI,i);
+		delete cfg;
+		delete rd;
+		delete udChain;
+		cfg = NULL;
+		rd = NULL;
+		udChain = NULL;
+/////////////////////////added for aggresive moving//////////////////////
+		changed = true;
+		//regenerate the RDChain 
+		cfg = new CFG(inlist);
+		cfg->findIDom();
+		cfg->findREdge();
+		loop = (cfg->getLoopSet())[i];
+		rd = new RD(cfg,inlist);
+		rd->genDefList();
+		rd->genGenSet();
+		rd->genKillSet();
+		rd->genRDOutSet();
+		udChain = new UDChain(inlist, cfg, rd);
+		cout<<endl;
+		//cfg->fullPrint();
+		cout<<endl;
+		LI.clear();
+		while(changed){
+			changed = false;
+
+			//for each BB in this block, check each instruction if its LI.
+			//if so, add to the set and changed become true;
+			for(set<int>::iterator ite = loop.begin(); ite != loop.end();ite++){
+				simple_instr *start, *end;
+				start = this->cfg->getBlockStartInstr(*ite);
+				end = this->cfg->getBlockEndInstr(*ite);
+				simple_instr *tracer = start;
+				assert(start != NULL);
+				while(true){
+					if(opIsLI(tracer,LI,loop)){ //todo
+						if(LI.count( cfg->findIndexInstr(tracer)) == 0){
+							LI.insert(cfg->findIndexInstr(tracer));
+							changed = true;
+						}
+					}
+					if(tracer == end) break;
+					else tracer = tracer->next;
+				}
+			}
+		}
 		debugDump(i,LI);
 		moveCodeToPreheader(cfg->getLoopStart(i)-1, LI,i);
 		delete cfg;
@@ -223,11 +298,12 @@ void LICM::start(){
 		cfg = NULL;
 		rd = NULL;
 		udChain = NULL;
+
 	}
 }
 
 void LICM::findConstant(simple_instr *instr, set<void*> &LI){
-	if(!isDef(instr)) return ;
+	if(!isDefHaveLoad(instr)) return ;
 
 	if(instr->opcode == LDC_OP) return;
 	else{
@@ -250,11 +326,140 @@ void LICM::checkRegIsConst(simple_reg *reg, set<void*> &LI){
 	}
 }
 simple_reg *LICM::findTargetReg(simple_instr *instr){
-	if(isDef(instr)){
+	if(isDefHaveLoad(instr)){
 		if(instr->opcode == LDC_OP) return instr->u.ldc.dst;
 		else return instr->u.base.dst;
 	}
 	return NULL;
+}
+bool LICM::checkNeedModify(simple_instr *instr){
+	switch (instr->opcode) {
+		case LOAD_OP: 
+		case STR_OP: 
+		case MCPY_OP: 
+		case LDC_OP:
+		case JMP_OP:
+		case BTRUE_OP:
+		case BFALSE_OP: 
+		case CALL_OP: 
+		case MBR_OP: 
+		case LABEL_OP:
+		case RET_OP: 
+		case CVT_OP:
+		case CPY_OP: break;
+		case NEG_OP:
+		case NOT_OP: {
+			return true;
+			break;  
+		}
+		default:{
+			return true;
+		}
+
+
+	}
+	return false;
+}
+
+void LICM::aggressiveCheck(int preHeaderIndex, set<int> LI, int loopIndex){
+	set<void*> confirmedToMove;
+	set<void*> failedToMove;
+	set<int> loop = (cfg->getLoopSet())[loopIndex];
+	set<int> exitNode = cfg->getExitNode(loopIndex);
+
+	for(set<int>::iterator ite = LI.begin(); ite != LI.end(); ite++){
+		/* its gona be move iff
+		 1. BB s dominates all exits of L &&
+		2. v is not defined elsewhere in L &&
+		3. all uses of v in L can only be reached by the
+		definition of v in s )
+		*/
+		bool ifMove = true;
+		simple_instr *LIInstr = cfg->findInstrIndex(*ite);
+		//1.
+		for(set<int>::iterator exitNodeIte = exitNode.begin(); 
+												exitNodeIte != exitNode.end(); exitNodeIte++){
+			if(!cfg->ifDom(cfg->findBBIndex(*ite),*exitNodeIte)){
+				//cout<<*ite<<"fail #1"<<endl;
+				ifMove = false;
+				failedToMove.insert((void*)LIInstr);
+			}
+		}
+		//2.and3
+		simple_reg *targetReg = findTargetReg(LIInstr);
+		assert(targetReg != NULL);
+		if(targetReg->kind == PSEUDO_REG){
+			//loop through all BB in loop
+			for(set<int>::iterator loopIte = loop.begin(); 
+													loopIte !=loop.end(); loopIte++){
+				//loop through all instr in this BB
+				simple_instr *start, *end;
+				start = this->cfg->getBlockStartInstr(*loopIte);
+				end = this->cfg->getBlockEndInstr(*loopIte);
+				simple_instr *tracer = start;
+				if(start != NULL) while(true){
+					//2. v is not defined elsewhere in L &&
+					if(tracer != LIInstr && isDef(tracer)){
+						simple_reg *targetReg2 = findTargetReg(tracer);
+						if(targetReg2->kind == PSEUDO_REG){
+							if(targetReg2->num == targetReg->num){
+								ifMove = false;
+								failedToMove.insert((void*)LIInstr);
+								//cout<<*ite<<"fail #2"<<endl;
+								//debug//
+							}
+						}
+					}
+					//3.
+					//check if this Instrction is a Use of this particular variable
+					//if so, use UDChain to find all the defs for this use. 
+					//Go through all the defs, if the def is defining this variable and
+					//it is not our LIInstr, ifMove become false;
+					if(isUse(tracer, targetReg)){
+						set<int> defSet = udChain->findDefUse(cfg->findIndexInstr(tracer));
+						for(set<int>::iterator defIte =defSet.begin();defIte!=defSet.end();defIte++){
+							simple_instr *defInstr = cfg->findInstrIndex(*defIte);
+							if(defInstr->u.base.dst->num == targetReg->num
+									&& defInstr != LIInstr){
+								ifMove = false;
+								//cout<<*ite<<"fail #3"<<endl;
+								failedToMove.insert((void*)LIInstr);
+							}
+						}
+					}
+					if(tracer == end) break;
+					else tracer = tracer->next;
+				}
+			}
+		}
+	}
+	
+	for(set<void*>::iterator failIte = failedToMove.begin(); 
+						failIte != failedToMove.end();failIte++){
+		simple_instr *failInstr = (simple_instr*)*failIte;
+		if(checkNeedModify(failInstr)){
+			cout<<"aggressive changing  ";
+			fprint_instr(stdout, failInstr);
+
+			simple_instr *copyInstr = new_instr(CPY_OP,failInstr->type);
+			simple_reg *newTempReg = new_register(failInstr->type,TEMP_REG);
+
+			copyInstr->u.base.src1 = newTempReg;
+			copyInstr->u.base.dst = failInstr->u.base.dst;
+			failInstr->u.base.dst = newTempReg;
+
+			copyInstr->next = failInstr->next;
+			copyInstr->next->prev = copyInstr;
+			failInstr->next = copyInstr;
+			copyInstr->prev = failInstr;
+			cout<<"to\n\t";
+			fprint_instr(stdout, failInstr);
+			cout<<"\t";
+			fprint_instr(stdout, failInstr->next);
+		}
+	}
+
+	return;
 }
 void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 	set<void*> confirmedToMove;
@@ -323,7 +528,12 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 				}
 			}
 		}
-		if(ifMove) confirmedToMove.insert((void*)LIInstr);
+		if(ifMove)
+			confirmedToMove.insert((void*)LIInstr);
+		else if(checkNeedModify(LIInstr)){
+			//if this is true. It is likely I already modified this instruction
+			confirmedToMove.insert((void*)LIInstr);
+		}
 	}
 	
 	for(set<void*>::iterator confirmedIte = confirmedToMove.begin(); 
@@ -339,13 +549,10 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 	}
 	//debug done
 	moveInstr(preHeaderIndex, confirmedToMove);
-	//cfg->printInstr();
-
-
 	return;
 }
 void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
-	simple_instr *insertPoint = cfg->getBlockStartInstr(preHeader), *tracer = inlist;
+	simple_instr *insertPoint = cfg->getBlockEndInstr(preHeader), *tracer = inlist;
 
 	while(tracer){
 		if(confirmedToMove.count((void*)tracer) != 0){
@@ -361,6 +568,8 @@ void LICM::moveInstr(int preHeader, set<void*> confirmedToMove){
 				simple_reg *newReg = new_register(tracer->type,PSEUDO_REG);
 				tracer->u.base.dst = newReg;
 				replaceReg(oldReg,newReg);
+				cout<<"\t change to ";
+				fprint_instr(stdout, tracer);
 			}
 				
 			simple_instr *temp1,*temp2;

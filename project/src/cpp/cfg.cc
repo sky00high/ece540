@@ -752,8 +752,8 @@ void CFG::fullPrint(){
 			fprint_instr(stdout,findInstrIndex(j));
 		}
 	}
-	printDom();
-	printIDom();
+	//printDom();
+	//printIDom();
 	
 }
 

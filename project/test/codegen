@@ -1,5 +1,6 @@
 #!/bin/csh
+set filelist = "arrays cond cse dotprod mmult sor testprog"
 
-foreach i (`ls *.tmp`)
-	../src/cpp/printCode $i > $i"code"
+foreach program ($filelist)
+	../src/cpp/printCode $program".tmp" > $program"code"
 end
