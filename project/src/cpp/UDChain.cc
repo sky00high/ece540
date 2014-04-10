@@ -7,6 +7,7 @@
 #include "Definition.h"
 #include "UDChain.h"
 extern "C"{
+#include "print.h"
 	#include <simple.h>
 }
 
@@ -50,17 +51,15 @@ void UDChain::checkReg(simple_instr *instr,int blockIndex,simple_reg *lereg){
 		}
 		if(!isRedefined){
 			BitVector rdIn = (rd->getRDInSet())[blockIndex];
+			cout<<rdIn<<endl;
 			map<Definition,int>defMap = rd->getDefMap();
-			for(map<Definition,int>::const_iterator ite = defMap.begin();
-					ite != defMap.end(); ite++){
+			for(map<Definition,int>::const_iterator ite = defMap.begin();ite != defMap.end(); ite++){
 				//set the edge if this def's instr not in this BB
 				// and this def define the reg being used
 				// and it is in the RDin set of this BB
-				if(!rd->instrInBB(ite->first.instr,blockIndex) 
-						&& ite->first.instr->u.base.dst->num == lereg->num
-						&& rdIn.isSet(ite->second -1)) 
-					setEdge(cfg->getInstrNum(ite->first.instr), 
-									cfg->getInstrNum(instr));
+				if(ite->first.instr->u.base.dst->num == lereg->num)
+					if(rdIn.isSet(ite->second -1))
+						setEdge(cfg->getInstrNum(ite->first.instr), cfg->getInstrNum(instr));
 			}
 		} else {
 			assert(lastDefined != NULL);
@@ -197,3 +196,17 @@ set<int> UDChain::findDefUse(int useIndex){
 	}
 	return defSet;
 }
+
+void UDChain::printUDChain(){
+	for(int i = 0; i < instrNum; i++){
+		for(int j = 0; j < instrNum; j++){
+			if(isEdgeSet(i,j)){
+				cout<<"def ";
+				fprint_instr(stdout, cfg->findInstrIndex(i));
+				cout<<"Use ";
+				fprint_instr(stdout, cfg->findInstrIndex(j));
+			}
+		}
+	}
+}
+

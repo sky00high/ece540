@@ -8,6 +8,7 @@
 #include "Definition.h"
 extern "C"{
 	#include <simple.h>
+#include "print.h"
 }
 
 using namespace std;
@@ -57,8 +58,6 @@ bool RD::isDef(simple_instr *instr){
 void RD::genDefList(){
 	simple_instr *tracer = inlist;
 	int instrIndex = 0;
-
-
 	while(tracer){
 		if(isDef(tracer)){
 			Definition newDef(tracer,instrIndex);
@@ -80,7 +79,8 @@ Definition RD::findDefIndex(int index){
 void RD::printDefList(){
 	for(int i = 1; i <= defNum; i++){
 		cout<<"def "<<i<<" "<<findDefIndex(i).instrIndex
-				<<" r"<<findDefIndex(i).instr->u.base.dst->num<<endl;
+				<<": ";
+		fprint_instr(stdout, findDefIndex(i).instr);
 	}
 }
 
@@ -236,5 +236,10 @@ void RD::genRDOutSet(){
 void RD::printRDOutSet(){
 	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
 		cout <<"RDOut " <<i<<" "<<RDOutSet[i]<<endl;
+	}
+}
+void RD::printRDInSet(){
+	for(int i = 0; i < this->cfg->getTotalBlockNum(); i++){
+		cout <<"RDIn " <<i<<" "<<RDInSet[i]<<endl;
 	}
 }

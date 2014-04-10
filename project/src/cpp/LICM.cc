@@ -186,7 +186,7 @@ void LICM::start(){
 		rd->genRDOutSet();
 		udChain = new UDChain(inlist, cfg, rd);
 		cout<<endl;
-		cfg->fullPrint();
+		//cfg->fullPrint();
 		cout<<endl;
 		set<int> LI;
 		while(changed){
@@ -212,11 +212,6 @@ void LICM::start(){
 				}
 			}
 		}
-		for(set<int>::iterator ite = LI.begin(); ite != LI.end();ite++){
-			findConstant(cfg->findInstrIndex(*ite),LI);
-		}
-			
-
 		debugDump(i,LI);
 		moveCodeToPreheader(cfg->getLoopStart(i)-1, LI,i);
 		delete cfg;
@@ -228,14 +223,13 @@ void LICM::start(){
 	}
 }
 
-void LICM::findConstant(simple_instr *instr, set<int> &LI){
+void LICM::findConstant(simple_instr *instr, set<void*> &LI){
 	if(!isDef(instr)) return ;
 
 	if(instr->opcode == LDC_OP) return;
 	else{
 		int numOfOp = findNumOfOps(instr);
 		assert(numOfOp != -1);
-		bool return_value = true;
 		if(numOfOp == 1){
 			checkRegIsConst(instr->u.base.src1, LI);
 		} else  {
@@ -245,11 +239,11 @@ void LICM::findConstant(simple_instr *instr, set<int> &LI){
 		}
 	}
 }
-void LICM::checkRegIsConst(simple_reg *reg, set<int> &LI){
+void LICM::checkRegIsConst(simple_reg *reg, set<void*> &LI){
 	if(reg->kind == TEMP_REG){
 		simple_instr *ldcInstr = findTempDefInstr(reg->num);
 		assert(ldcInstr->opcode == LDC_OP);
-		LI.insert(cfg->findIndexInstr(ldcInstr));
+		LI.insert((void*)ldcInstr);
 	}
 }
 simple_reg *LICM::findTargetReg(simple_instr *instr){
@@ -329,6 +323,10 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 		if(ifMove) confirmedToMove.insert((void*)LIInstr);
 	}
 	
+	for(set<void*>::iterator confirmedIte = confirmedToMove.begin(); 
+						confirmedIte != confirmedToMove.end();confirmedIte++){
+		findConstant((simple_instr*)*confirmedIte,confirmedToMove);
+	}
 	//debug msg
 	cout<<"for loop "<<loopIndex<<" instr will be moved is "<<endl;
 	for(set<void*>::iterator ite=confirmedToMove.begin();
@@ -338,7 +336,7 @@ void LICM::moveCodeToPreheader(int preHeaderIndex, set<int> LI, int loopIndex){
 	}
 	//debug done
 	moveInstr(preHeaderIndex, confirmedToMove);
-	cfg->printInstr();
+	//cfg->printInstr();
 
 
 	return;

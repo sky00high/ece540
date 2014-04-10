@@ -28,8 +28,8 @@ class LICM{
 	bool cmpReg(simple_reg *reg1, simple_reg *reg2);
 	bool isUse(simple_instr *instr, simple_reg *reg);
 	void moveInstr(int preHeader, set<void*> confirmedToMove);
-	void checkRegIsConst(simple_reg *reg, set<int> &LI);
-	void findConstant(simple_instr *instr, set<int> &LI);
+	void checkRegIsConst(simple_reg *reg, set<void*> &LI);
+	void findConstant(simple_instr *instr, set<void*> &LI);
 	void replaceReg(simple_reg *old, simple_reg *newReg);
 	void ifUseReplace(simple_instr *tracer, simple_reg *reg, 
 									simple_reg *newReg);

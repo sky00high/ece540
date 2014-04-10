@@ -56,6 +56,7 @@ class RD {
 		//RDout
 		void genRDOutSet();
 		void printRDOutSet();
+		void printRDInSet();
 
 		//other
 

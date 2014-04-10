@@ -36,6 +36,7 @@ class UDChain{
 		bool isEdgeSet(int start, int end);
 
 		set<int> findDefUse(int useIndex);
+		void printUDChain();
 
 
 

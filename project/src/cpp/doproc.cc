@@ -24,16 +24,50 @@ simple_instr* do_procedure (simple_instr *inlist, char *proc_name)
 	 thisCFG->genLoopHeader();
 	 //thisCFG->fullPrint();
 	 delete thisCFG;
-	 /*
+	 ///////udchain debug/////
+		CFG *cfg = new CFG(inlist);
+		cfg->findIDom();
+		cfg->findREdge();
+		RD *rd = new RD(cfg,inlist);
+		rd->genDefList();
+		rd->genGenSet();
+		rd->genKillSet();
+		rd->genRDOutSet();
+		rd->printDefList();
+		rd->printRDInSet();
+		UDChain *udChain = new UDChain(inlist, cfg, rd);
+		udChain->printUDChain();
+		delete cfg;
+		delete rd;
+		delete udChain;
+		/////udchain debug done////
+	 cout<<"============================================================="<<endl;;
+	 cout<<"before"<<endl;
+	 cout<<"============================================================="<<endl;;
+	 
 	 thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();
 	 thisCFG->findREdge();
 	 thisCFG->genLoopSet();
-	 thisCFG->fullPrint();
+	 thisCFG->printInstr();
+	 //thisCFG->fullPrint();
 	 delete thisCFG;
-	 */
+	 cout<<"============================================================="<<endl;;
+	 
 	 LICM newLICM(inlist);
 	 newLICM.start();
+	 cout<<"============================================================="<<endl;;
+	 cout<<"after"<<endl;
+	 cout<<"============================================================="<<endl;;
+	 
+	 thisCFG = new CFG(inlist);
+	 thisCFG->findIDom();
+	 thisCFG->findREdge();
+	 thisCFG->genLoopSet();
+	 thisCFG->printInstr();
+	 //thisCFG->fullPrint();
+	 delete thisCFG;
+	 cout<<"============================================================="<<endl;;
 	/* 
 	 thisCFG = new CFG(inlist);
 	 thisCFG->findIDom();

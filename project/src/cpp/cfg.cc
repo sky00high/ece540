@@ -762,7 +762,7 @@ void CFG::printInstr(){
 	simple_instr *tracer = inlist;
 
 	while(tracer){
-		cout<<index<<" :";
+		//cout<<index<<" :";
 		fprint_instr(stdout,tracer);
 		tracer = tracer->next;
 		index ++;
